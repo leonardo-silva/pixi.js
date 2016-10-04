@@ -1,4 +1,4 @@
-var core = require('../core');
+import * as core from '../core';
 
 /**
  * Holds all information related to an Interaction event
@@ -6,7 +6,15 @@ var core = require('../core');
  * @class
  * @memberof PIXI.interaction
  */
+<<<<<<< HEAD
 class InteractionData {
+=======
+export default class InteractionData
+{
+    /**
+     *
+     */
+>>>>>>> upstream/dev
     constructor()
     {
         /**
@@ -34,16 +42,31 @@ class InteractionData {
     /**
      * This will return the local coordinates of the specified displayObject for this InteractionData
      *
+<<<<<<< HEAD
      * @param displayObject {PIXI.DisplayObject} The DisplayObject that you would like the local coords off
      * @param [point] {PIXI.Point} A Point object in which to store the value, optional (otherwise will create a new point)
      * @param [globalPos] {PIXI.Point} A Point object containing your custom global coords, optional (otherwise will use the current global coords)
      * @return {PIXI.Point} A point containing the coordinates of the InteractionData position relative to the DisplayObject
+=======
+     * @param {PIXI.DisplayObject} displayObject - The DisplayObject that you would like the local
+     *  coords off
+     * @param {PIXI.Point} [point] - A Point object in which to store the value, optional (otherwise
+     *  will create a new point)
+     * @param {PIXI.Point} [globalPos] - A Point object containing your custom global coords, optional
+     *  (otherwise will use the current global coords)
+     * @return {PIXI.Point} A point containing the coordinates of the InteractionData position relative
+     *  to the DisplayObject
+>>>>>>> upstream/dev
      */
     getLocalPosition(displayObject, point, globalPos)
     {
         return displayObject.worldTransform.applyInverse(globalPos || this.global, point);
     }
+<<<<<<< HEAD
 
 }
 
 module.exports = InteractionData;
+=======
+}
+>>>>>>> upstream/dev

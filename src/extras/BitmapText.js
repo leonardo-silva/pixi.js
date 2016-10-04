@@ -1,5 +1,5 @@
-var core = require('../core'),
-    ObservablePoint = require('../core/math/ObservablePoint');
+import * as core from '../core';
+import ObservablePoint from '../core/math/ObservablePoint';
 
 /**
  * A BitmapText object will create a line or multiple lines of text using bitmap font. To
@@ -9,7 +9,7 @@ var core = require('../core'),
  *
  * ```js
  * // in this case the font is in a file called 'desyrel.fnt'
- * var bitmapText = new PIXI.extras.BitmapText("text using a fancy font!", {font: "35px Desyrel", align: "right"});
+ * let bitmapText = new PIXI.extras.BitmapText("text using a fancy font!", {font: "35px Desyrel", align: "right"});
  * ```
  *
  * http://www.angelcode.com/products/bmfont/ for windows or
@@ -18,16 +18,8 @@ var core = require('../core'),
  * @class
  * @extends PIXI.Container
  * @memberof PIXI.extras
- * @param text {string} The copy that you would like the text to display
- * @param style {object} The style parameters
- * @param style.font {string|object} The font descriptor for the object, can be passed as a string of form
- *      "24px FontName" or "FontName" or as an object with explicit name/size properties.
- * @param [style.font.name] {string} The bitmap font id
- * @param [style.font.size] {number} The size of the font in pixels, e.g. 24
- * @param [style.align='left'] {string} Alignment for multiline text ('left', 'center' or 'right'), does not affect
- *      single line text
- * @param [style.tint=0xFFFFFF] {number} The tint color
  */
+<<<<<<< HEAD
 class BitmapText extends core.Container {
     constructor(text, style)
     {
@@ -182,6 +174,176 @@ class BitmapText extends core.Container {
 
             var charData = data.chars[charCode];
 
+=======
+export default class BitmapText extends core.Container
+{
+    /**
+     * @param {string} text - The copy that you would like the text to display
+     * @param {object} style - The style parameters
+     * @param {string|object} style.font - The font descriptor for the object, can be passed as a string of form
+     *      "24px FontName" or "FontName" or as an object with explicit name/size properties.
+     * @param {string} [style.font.name] - The bitmap font id
+     * @param {number} [style.font.size] - The size of the font in pixels, e.g. 24
+     * @param {string} [style.align='left'] - Alignment for multiline text ('left', 'center' or 'right'), does not affect
+     *      single line text
+     * @param {number} [style.tint=0xFFFFFF] - The tint color
+     */
+    constructor(text, style = {})
+    {
+        super();
+
+        /**
+         * The width of the overall text, different from fontSize,
+         * which is defined in the style object
+         *
+         * @member {number}
+         * @readonly
+         */
+        this.textWidth = 0;
+
+        /**
+         * The height of the overall text, different from fontSize,
+         * which is defined in the style object
+         *
+         * @member {number}
+         * @readonly
+         */
+        this.textHeight = 0;
+
+        /**
+         * Private tracker for the letter sprite pool.
+         *
+         * @member {PIXI.Sprite[]}
+         * @private
+         */
+        this._glyphs = [];
+
+        /**
+         * Private tracker for the current style.
+         *
+         * @member {object}
+         * @private
+         */
+        this._font = {
+            tint: style.tint !== undefined ? style.tint : 0xFFFFFF,
+            align: style.align || 'left',
+            name: null,
+            size: 0,
+        };
+
+        /**
+         * Private tracker for the current font.
+         *
+         * @member {object}
+         * @private
+         */
+        this.font = style.font; // run font setter
+
+        /**
+         * Private tracker for the current text.
+         *
+         * @member {string}
+         * @private
+         */
+        this._text = text;
+
+        /**
+         * The max width of this bitmap text in pixels. If the text provided is longer than the
+         * value provided, line breaks will be automatically inserted in the last whitespace.
+         * Disable by setting value to 0
+         *
+         * @member {number}
+         */
+        this.maxWidth = 0;
+
+        /**
+         * The max line height. This is useful when trying to use the total height of the Text,
+         * ie: when trying to vertically align.
+         *
+         * @member {number}
+         */
+        this.maxLineHeight = 0;
+
+        /**
+         * Text anchor. read-only
+         *
+         * @member {PIXI.ObservablePoint}
+         * @private
+         */
+        this._anchor = new ObservablePoint(() => { this.dirty = true; }, this, 0, 0);
+
+        /**
+         * The dirty state of this object.
+         *
+         * @member {boolean}
+         */
+        this.dirty = false;
+
+        this.updateText();
+    }
+
+    /**
+     * Renders text and updates it when needed
+     *
+     * @private
+     */
+    updateText()
+    {
+        const data = BitmapText.fonts[this._font.name];
+        const scale = this._font.size / data.size;
+        const pos = new core.Point();
+        const chars = [];
+        const lineWidths = [];
+
+        let prevCharCode = null;
+        let lastLineWidth = 0;
+        let maxLineWidth = 0;
+        let line = 0;
+        let lastSpace = -1;
+        let lastSpaceWidth = 0;
+        let maxLineHeight = 0;
+
+        for (let i = 0; i < this.text.length; i++)
+        {
+            const charCode = this.text.charCodeAt(i);
+
+            if (/(\s)/.test(this.text.charAt(i)))
+            {
+                lastSpace = i;
+                lastSpaceWidth = lastLineWidth;
+            }
+
+            if (/(?:\r\n|\r|\n)/.test(this.text.charAt(i)))
+            {
+                lineWidths.push(lastLineWidth);
+                maxLineWidth = Math.max(maxLineWidth, lastLineWidth);
+                line++;
+
+                pos.x = 0;
+                pos.y += data.lineHeight;
+                prevCharCode = null;
+                continue;
+            }
+
+            if (lastSpace !== -1 && this.maxWidth > 0 && pos.x * scale > this.maxWidth)
+            {
+                core.utils.removeItems(chars, lastSpace, i - lastSpace);
+                i = lastSpace;
+                lastSpace = -1;
+
+                lineWidths.push(lastSpaceWidth);
+                maxLineWidth = Math.max(maxLineWidth, lastSpaceWidth);
+                line++;
+
+                pos.x = 0;
+                pos.y += data.lineHeight;
+                prevCharCode = null;
+                continue;
+            }
+
+            const charData = data.chars[charCode];
+
+>>>>>>> upstream/dev
             if (!charData)
             {
                 continue;
@@ -192,7 +354,16 @@ class BitmapText extends core.Container {
                 pos.x += charData.kerning[prevCharCode];
             }
 
+<<<<<<< HEAD
             chars.push({texture:charData.texture, line: line, charCode: charCode, position: new core.Point(pos.x + charData.xOffset, pos.y + charData.yOffset)});
+=======
+            chars.push({
+                texture: charData.texture,
+                line,
+                charCode,
+                position: new core.Point(pos.x + charData.xOffset, pos.y + charData.yOffset),
+            });
+>>>>>>> upstream/dev
             lastLineWidth = pos.x + (charData.texture.width + charData.xOffset);
             pos.x += charData.xAdvance;
             maxLineHeight = Math.max(maxLineHeight, (charData.yOffset + charData.texture.height));
@@ -202,11 +373,19 @@ class BitmapText extends core.Container {
         lineWidths.push(lastLineWidth);
         maxLineWidth = Math.max(maxLineWidth, lastLineWidth);
 
+<<<<<<< HEAD
         var lineAlignOffsets = [];
 
         for (i = 0; i <= line; i++)
         {
             var alignOffset = 0;
+=======
+        const lineAlignOffsets = [];
+
+        for (let i = 0; i <= line; i++)
+        {
+            let alignOffset = 0;
+>>>>>>> upstream/dev
 
             if (this._font.align === 'right')
             {
@@ -220,12 +399,21 @@ class BitmapText extends core.Container {
             lineAlignOffsets.push(alignOffset);
         }
 
+<<<<<<< HEAD
         var lenChars = chars.length;
         var tint = this.tint;
 
         for (i = 0; i < lenChars; i++)
         {
             var c = this._glyphs[i]; // get the next glyph sprite
+=======
+        const lenChars = chars.length;
+        const tint = this.tint;
+
+        for (let i = 0; i < lenChars; i++)
+        {
+            let c = this._glyphs[i]; // get the next glyph sprite
+>>>>>>> upstream/dev
 
             if (c)
             {
@@ -249,7 +437,11 @@ class BitmapText extends core.Container {
         }
 
         // remove unnecessary children.
+<<<<<<< HEAD
         for (i = lenChars; i < this._glyphs.length; ++i)
+=======
+        for (let i = lenChars; i < this._glyphs.length; ++i)
+>>>>>>> upstream/dev
         {
             this.removeChild(this._glyphs[i]);
         }
@@ -260,7 +452,11 @@ class BitmapText extends core.Container {
         // apply anchor
         if (this.anchor.x !== 0 || this.anchor.y !== 0)
         {
+<<<<<<< HEAD
             for (i = 0; i < lenChars; i++)
+=======
+            for (let i = 0; i < lenChars; i++)
+>>>>>>> upstream/dev
             {
                 this._glyphs[i].x -= this.textWidth * this.anchor.x;
                 this._glyphs[i].y -= this.textHeight * this.anchor.y;
@@ -285,10 +481,17 @@ class BitmapText extends core.Container {
      *
      * @return {PIXI.Rectangle} The rectangular bounding area
      */
+<<<<<<< HEAD
 
     getLocalBounds()
     {
         this.validate();
+=======
+    getLocalBounds()
+    {
+        this.validate();
+
+>>>>>>> upstream/dev
         return super.getLocalBounds();
     }
 
@@ -306,6 +509,7 @@ class BitmapText extends core.Container {
         }
     }
 
+<<<<<<< HEAD
     makeDirty() {
         this.dirty = true;
     }
@@ -313,26 +517,30 @@ class BitmapText extends core.Container {
 }
 
 module.exports = BitmapText;
-
-Object.defineProperties(BitmapText.prototype, {
+=======
     /**
      * The tint of the BitmapText object
      *
      * @member {number}
      * @memberof PIXI.extras.BitmapText#
      */
-    tint: {
-        get: function ()
-        {
-            return this._font.tint;
-        },
-        set: function (value)
-        {
-            this._font.tint = (typeof value === 'number' && value >= 0) ? value : 0xFFFFFF;
+    get tint()
+    {
+        return this._font.tint;
+    }
+>>>>>>> upstream/dev
 
-            this.dirty = true;
-        }
-    },
+    /**
+     * Sets the tint.
+     *
+     * @param {number} value - The value to set to.
+     */
+    set tint(value)
+    {
+        this._font.tint = (typeof value === 'number' && value >= 0) ? value : 0xFFFFFF;
+
+        this.dirty = true;
+    }
 
     /**
      * The alignment of the BitmapText object
@@ -341,18 +549,22 @@ Object.defineProperties(BitmapText.prototype, {
      * @default 'left'
      * @memberof PIXI.extras.BitmapText#
      */
-    align: {
-        get: function ()
-        {
-            return this._font.align;
-        },
-        set: function (value)
-        {
-            this._font.align = value || 'left';
+    get align()
+    {
+        return this._font.align;
+    }
 
-            this.dirty = true;
-        }
-    },
+    /**
+     * Sets the alignment
+     *
+     * @param {string} value - The value to set to.
+     */
+    set align(value)
+    {
+        this._font.align = value || 'left';
+
+        this.dirty = true;
+    }
 
     /**
      * The anchor sets the origin point of the text.
@@ -363,19 +575,27 @@ Object.defineProperties(BitmapText.prototype, {
      * @member {PIXI.Point | number}
      * @memberof PIXI.extras.BitmapText#
      */
-    anchor: {
-        get : function() {
-            return this._anchor;
-        },
-        set: function(value) {
-            if (typeof value === 'number'){
-                 this._anchor.set(value);
-            }
-            else {
-                this._anchor.copy(value);
-            }
+    get anchor()
+    {
+        return this._anchor;
+    }
+
+    /**
+     * Sets the anchor.
+     *
+     * @param {PIXI.Point|number} value - The value to set to.
+     */
+    set anchor(value)
+    {
+        if (typeof value === 'number')
+        {
+            this._anchor.set(value);
         }
-    },
+        else
+        {
+            this._anchor.copy(value);
+        }
+    }
 
     /**
      * The font descriptor of the BitmapText object
@@ -383,38 +603,7 @@ Object.defineProperties(BitmapText.prototype, {
      * @member {string|object}
      * @memberof PIXI.extras.BitmapText#
      */
-    font: {
-        get: function ()
-        {
-            return this._font;
-        },
-        set: function (value)
-        {
-            if (!value) {
-                return;
-            }
-
-            if (typeof value === 'string') {
-                value = value.split(' ');
-
-                this._font.name = value.length === 1 ? value[0] : value.slice(1).join(' ');
-                this._font.size = value.length >= 2 ? parseInt(value[0], 10) : BitmapText.fonts[this._font.name].size;
-            }
-            else {
-                this._font.name = value.name;
-                this._font.size = typeof value.size === 'number' ? value.size : parseInt(value.size, 10);
-            }
-
-            this.dirty = true;
-        }
-    },
-
-    /**
-     * The text of the BitmapText object
-     *
-     * @member {string}
-     * @memberof PIXI.extras.BitmapText#
-     */
+<<<<<<< HEAD
     text: {
         get: function ()
         {
@@ -432,5 +621,67 @@ Object.defineProperties(BitmapText.prototype, {
         }
     }
 });
+=======
+    get font()
+    {
+        return this._font;
+    }
+
+    /**
+     * Sets the font.
+     *
+     * @param {string|object} value - The value to set to.
+     */
+    set font(value)
+    {
+        if (!value)
+        {
+            return;
+        }
+
+        if (typeof value === 'string')
+        {
+            value = value.split(' ');
+
+            this._font.name = value.length === 1 ? value[0] : value.slice(1).join(' ');
+            this._font.size = value.length >= 2 ? parseInt(value[0], 10) : BitmapText.fonts[this._font.name].size;
+        }
+        else
+        {
+            this._font.name = value.name;
+            this._font.size = typeof value.size === 'number' ? value.size : parseInt(value.size, 10);
+        }
+
+        this.dirty = true;
+    }
+
+    /**
+     * The text of the BitmapText object
+     *
+     * @member {string}
+     * @memberof PIXI.extras.BitmapText#
+     */
+    get text()
+    {
+        return this._text;
+    }
+
+    /**
+     * Sets the text.
+     *
+     * @param {string} value - The value to set to.
+     */
+    set text(value)
+    {
+        value = value.toString() || ' ';
+        if (this._text === value)
+        {
+            return;
+        }
+        this._text = value;
+        this.dirty = true;
+    }
+}
+>>>>>>> upstream/dev
 
 BitmapText.fonts = {};

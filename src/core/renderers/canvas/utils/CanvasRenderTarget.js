@@ -1,14 +1,12 @@
-var CONST = require('../../../const');
+import { RESOLUTION } from '../../../const';
 
 /**
  * Creates a Canvas element of the given size.
  *
  * @class
  * @memberof PIXI
- * @param width {number} the width for the newly created canvas
- * @param height {number} the height for the newly created canvas
- * @param [resolution=1] The resolution / device pixel ratio of the canvas
  */
+<<<<<<< HEAD
 class CanvasRenderTarget {
     constructor(width, height, resolution)
     {
@@ -68,38 +66,112 @@ class CanvasRenderTarget {
 }
 
 module.exports = CanvasRenderTarget;
+=======
+export default class CanvasRenderTarget
+{
+    /**
+     * @param {number} width - the width for the newly created canvas
+     * @param {number} height - the height for the newly created canvas
+     * @param {number} [resolution=1] - The resolution / device pixel ratio of the canvas
+     */
+    constructor(width, height, resolution)
+    {
+        /**
+         * The Canvas object that belongs to this CanvasRenderTarget.
+         *
+         * @member {HTMLCanvasElement}
+         */
+        this.canvas = document.createElement('canvas');
 
-Object.defineProperties(CanvasRenderTarget.prototype, {
+        /**
+         * A CanvasRenderingContext2D object representing a two-dimensional rendering context.
+         *
+         * @member {CanvasRenderingContext2D}
+         */
+        this.context = this.canvas.getContext('2d');
+
+        this.resolution = resolution || RESOLUTION;
+
+        this.resize(width, height);
+    }
+
+    /**
+     * Clears the canvas that was created by the CanvasRenderTarget class.
+     *
+     * @private
+     */
+    clear()
+    {
+        this.context.setTransform(1, 0, 0, 1, 0, 0);
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    /**
+     * Resizes the canvas to the specified width and height.
+     *
+     * @param {number} width - the new width of the canvas
+     * @param {number} height - the new height of the canvas
+     */
+    resize(width, height)
+    {
+        this.canvas.width = width * this.resolution;
+        this.canvas.height = height * this.resolution;
+    }
+
+    /**
+     * Destroys this canvas.
+     *
+     */
+    destroy()
+    {
+        this.context = null;
+        this.canvas = null;
+    }
+>>>>>>> upstream/dev
+
     /**
      * The width of the canvas buffer in pixels.
      *
      * @member {number}
      * @memberof PIXI.CanvasRenderTarget#
      */
-    width: {
-        get: function ()
-        {
-            return this.canvas.width;
-        },
-        set: function (val)
-        {
-            this.canvas.width = val;
-        }
-    },
+    get width()
+    {
+        return this.canvas.width;
+    }
+
+    /**
+     * Sets the width.
+     *
+     * @param {number} val - The value to set.
+     */
+    set width(val)
+    {
+        this.canvas.width = val;
+    }
+
     /**
      * The height of the canvas buffer in pixels.
      *
      * @member {number}
      * @memberof PIXI.CanvasRenderTarget#
      */
-    height: {
-        get: function ()
-        {
-            return this.canvas.height;
-        },
-        set: function (val)
-        {
-            this.canvas.height = val;
-        }
+    get height()
+    {
+        return this.canvas.height;
     }
+<<<<<<< HEAD
 });
+=======
+
+    /**
+     * Sets the height.
+     *
+     * @param {number} val - The value to set.
+     */
+    set height(val)
+    {
+        this.canvas.height = val;
+    }
+}
+>>>>>>> upstream/dev

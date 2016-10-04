@@ -1,6 +1,6 @@
 {
   "name": "pixi.js",
-  "version": "4.0.0",
+  "version": "4.0.3",
   "description": "Pixi.js is a fast lightweight 2D library that works across all devices.",
   "author": "Mat Groves",
   "contributors": [
@@ -9,7 +9,7 @@
     "Chad Engler <chad@pantherdev.com>",
     "Richard Davey <rdavey@gmail.com>"
   ],
-  "main": "./src/index.js",
+  "main": "./bin/pixi.min.js",
   "homepage": "http://goodboydigital.com/",
   "bugs": "https://github.com/pixijs/pixi.js/issues",
   "license": "MIT",
@@ -22,14 +22,21 @@
     "prestart": "npm run clean",
     "start": "parallelshell \"npm run watch:lint\" \"npm run watch\"",
     "watch": "pixify -n PIXI -o pixi -w",
-    "watch:lint": "watch \"jshint --reporter=scripts/reporter.js scripts src test || exit 0\" src",
-    "test": "floss --path test/index.js",
+    "watch:lint": "watch \"eslint scripts src test || exit 0\" src",
+    "test": "floss --path test/index.js -c bin/pixi.js -s",
     "test:debug": "npm test -- --debug",
-    "lint": "jshint --reporter=scripts/reporter.js scripts src test",
+    "precoverage": "rimraf coverage && npm run build -- --noExternal",
+    "coverage": "npm test -- -h",
+    "lint": "eslint scripts src test",
+    "lintfix": "npm run lint --fix",
     "prebuild": "npm run lint && npm run clean",
     "build": "pixify -n PIXI -o pixi",
-    "postbuild": "npm test",
-    "docs": "jsdoc -c scripts/jsdoc.conf.json -R README.md"
+    "docs": "jsdoc -c scripts/jsdoc.conf.json -R README.md",
+    "publish:patch": "npm version patch --no-git-tag-version && npm publish",
+    "publish:minor": "npm version minor --no-git-tag-version && npm publish",
+    "publish:major": "npm version major --no-git-tag-version && npm publish",
+    "postversion": "npm run build && npm test",
+    "postpublish": "node scripts/release.js"
   },
   "files": [
     "bin/",
@@ -42,12 +49,12 @@
   "dependencies": {
     "bit-twiddle": "^1.0.2",
     "earcut": "^2.0.7",
-    "eventemitter3": "^1.1.1",
+    "eventemitter3": "^2.0.0",
     "glslify": "^5.0.2",
     "ismobilejs": "^0.4.0",
     "object-assign": "^4.0.1",
     "pixi-gl-core": "^1.0.2",
-    "resource-loader": "^1.6.4",
+    "resource-loader": "^1.8.0",
     "browserify-versionify": "^1.0.6"
   },
   "devDependencies": {
@@ -55,16 +62,15 @@
     "babelify": "^7.3.0",
     "del": "^2.2.0",
     "electron-prebuilt": "^1.3.2",
-    "floss": "^0.7.1",
+    "eslint": "^3.5.0",
+    "floss": "^1.2.0",
+    "gh-pages": "^0.11.0",
     "jaguarjs-jsdoc": "^1.0.1",
-    "jsdoc": "^3.4.0",
-    "jshint": "^2.9.2",
-    "jshint-stylish": "^2.2.0",
-    "jshint-stylish-summary": "^0.1.2",
+    "jsdoc": "git+https://github.com/jsdoc3/jsdoc.git#releases/3.4",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "parallelshell": "^2.0.0",
-    "pixify": "^1.4.0",
+    "pixify": "^1.5.0",
     "rimraf": "^2.5.3",
     "watch": "^0.19.1"
   },
@@ -74,7 +80,16 @@
         "babelify",
         {
           "presets": [
+<<<<<<< HEAD
             "es2015"
+=======
+            [
+              "es2015",
+              {
+                "loose": true
+              }
+            ]
+>>>>>>> upstream/dev
           ]
         }
       ],

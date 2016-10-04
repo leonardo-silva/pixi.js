@@ -1,5 +1,5 @@
-var core = require('../../core');
-var glslify  = require('glslify');
+import * as core from '../../core';
+const glslify = require('glslify'); // eslint-disable-line no-undef
 
 /**
  *
@@ -14,18 +14,34 @@ var glslify  = require('glslify');
  * @memberof PIXI
  *
  */
+<<<<<<< HEAD
 class FXAAFilter extends core.Filter {
     constructor()
     {
         //TODO - needs work
+=======
+export default class FXAAFilter extends core.Filter
+{
+    /**
+     *
+     */
+    constructor()
+    {
+        // TODO - needs work
+>>>>>>> upstream/dev
         super(
             // vertex shader
             glslify('./fxaa.vert'),
             // fragment shader
             glslify('./fxaa.frag')
         );
+<<<<<<< HEAD
 
     }
 }
 
 module.exports = FXAAFilter;
+=======
+    }
+}
+>>>>>>> upstream/dev

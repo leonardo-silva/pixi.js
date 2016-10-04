@@ -1,12 +1,19 @@
-var Shader = require('../../core/Shader');
+import Shader from '../../core/Shader';
 
 /**
  * @class
  * @extends PIXI.Shader
  * @memberof PIXI.mesh
- * @param gl {PIXI.Shader} TODO: Find a good explanation for this.
  */
+<<<<<<< HEAD
 class MeshShader extends Shader {
+=======
+export default class MeshShader extends Shader
+{
+    /**
+     * @param {WebGLRenderingContext} gl - The WebGLRenderingContext.
+     */
+>>>>>>> upstream/dev
     constructor(gl)
     {
         super(
@@ -22,9 +29,15 @@ class MeshShader extends Shader {
                 'varying vec2 vTextureCoord;',
 
                 'void main(void){',
+<<<<<<< HEAD
                 '   gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);',
                 '   vTextureCoord = aTextureCoord;',
                 '}'
+=======
+                '   gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);', // eslint-disable-line max-len
+                '   vTextureCoord = aTextureCoord;',
+                '}',
+>>>>>>> upstream/dev
             ].join('\n'),
             [
                 'varying vec2 vTextureCoord;',
@@ -36,10 +49,17 @@ class MeshShader extends Shader {
                 'void main(void){',
                 '   gl_FragColor = texture2D(uSampler, vTextureCoord) * vec4(tint * alpha, alpha);',
                // '   gl_FragColor = vec4(1.0);',
+<<<<<<< HEAD
                 '}'
+=======
+                '}',
+>>>>>>> upstream/dev
             ].join('\n')
         );
     }
 }
+<<<<<<< HEAD
 
 module.exports = MeshShader;
+=======
+>>>>>>> upstream/dev

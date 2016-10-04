@@ -1,4 +1,4 @@
-var WebGLManager = require('../managers/WebGLManager');
+import WebGLManager from '../managers/WebGLManager';
 
 /**
  * Base for a common object renderer that can be used as a system renderer plugin.
@@ -6,14 +6,18 @@ var WebGLManager = require('../managers/WebGLManager');
  * @class
  * @extends PIXI.WebGLManager
  * @memberof PIXI
- * @param renderer {PIXI.WebGLRenderer} The renderer this object renderer works for.
  */
+<<<<<<< HEAD
 class ObjectRenderer extends WebGLManager {
     constructor(renderer)
     {
         super(renderer);
     }
 
+=======
+export default class ObjectRenderer extends WebGLManager
+{
+>>>>>>> upstream/dev
     /**
      * Starts the renderer and sets the shader
      *
@@ -40,6 +44,7 @@ class ObjectRenderer extends WebGLManager {
     {
         // flush!
     }
+<<<<<<< HEAD
 
     /**
      * Renders an object
@@ -54,3 +59,16 @@ class ObjectRenderer extends WebGLManager {
 }
 
 module.exports = ObjectRenderer;
+=======
+
+    /**
+     * Renders an object
+     *
+     * @param {PIXI.DisplayObject} object - The object to render.
+     */
+    render(object) // eslint-disable-line no-unused-vars
+    {
+        // render the object
+    }
+}
+>>>>>>> upstream/dev

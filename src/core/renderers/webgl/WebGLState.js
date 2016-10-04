@@ -1,4 +1,10 @@
-var mapWebGLBlendModesToPixi = require('./utils/mapWebGLBlendModesToPixi');
+import mapWebGLBlendModesToPixi from './utils/mapWebGLBlendModesToPixi';
+
+const BLEND = 0;
+const DEPTH_TEST = 1;
+const FRONT_FACE = 2;
+const CULL_FACE = 3;
+const BLEND_FUNC = 4;
 
 var BLEND = 0,
     DEPTH_TEST = 1,
@@ -11,9 +17,16 @@ var BLEND = 0,
  *
  * @memberof PIXI
  * @class
- * @param gl {WebGLRenderingContext} The current WebGL rendering context
  */
+<<<<<<< HEAD
 class WebGLState {
+=======
+export default class WebGLState
+{
+    /**
+     * @param {WebGLRenderingContext} gl - The current WebGL rendering context
+     */
+>>>>>>> upstream/dev
     constructor(gl)
     {
         /**
@@ -58,16 +71,29 @@ class WebGLState {
 
         this.maxAttribs = gl.getParameter(gl.MAX_VERTEX_ATTRIBS);
 
+<<<<<<< HEAD
         this.attribState = {tempAttribState:new Array(this.maxAttribs),
             attribState:new Array(this.maxAttribs)};
+=======
+        this.attribState = {
+            tempAttribState: new Array(this.maxAttribs),
+            attribState: new Array(this.maxAttribs),
+        };
+>>>>>>> upstream/dev
 
         this.blendModes = mapWebGLBlendModesToPixi(gl);
 
         // check we have vao..
         this.nativeVaoExtension = (
+<<<<<<< HEAD
             gl.getExtension('OES_vertex_array_object') ||
             gl.getExtension('MOZ_OES_vertex_array_object') ||
             gl.getExtension('WEBKIT_OES_vertex_array_object')
+=======
+            gl.getExtension('OES_vertex_array_object')
+            || gl.getExtension('MOZ_OES_vertex_array_object')
+            || gl.getExtension('WEBKIT_OES_vertex_array_object')
+>>>>>>> upstream/dev
         );
     }
 
@@ -77,16 +103,26 @@ class WebGLState {
     push()
     {
         // next state..
+<<<<<<< HEAD
         var state = this.stack[++this.stackIndex];
 
         if(!state)
+=======
+        let state = this.stack[++this.stackIndex];
+
+        if (!state)
+>>>>>>> upstream/dev
         {
             state = this.stack[this.stackIndex] = new Uint8Array(16);
         }
 
         // copy state..
         // set active state so we can force overrides of gl state
+<<<<<<< HEAD
         for (var i = 0; i < this.activeState.length; i++)
+=======
+        for (let i = 0; i < this.activeState.length; i++)
+>>>>>>> upstream/dev
         {
             this.activeState[i] = state[i];
         }
@@ -97,6 +133,7 @@ class WebGLState {
      */
     pop()
     {
+<<<<<<< HEAD
         var state = this.stack[--this.stackIndex];
         this.setState(state);
     }
@@ -280,5 +317,162 @@ class WebGLState {
     }
 
 }
+=======
+        const state = this.stack[--this.stackIndex];
 
-module.exports = WebGLState;
+        this.setState(state);
+    }
+
+    /**
+     * Sets the current state
+     *
+     * @param {*} state - The state to set.
+     */
+    setState(state)
+    {
+        this.setBlend(state[BLEND]);
+        this.setDepthTest(state[DEPTH_TEST]);
+        this.setFrontFace(state[FRONT_FACE]);
+        this.setCullFace(state[CULL_FACE]);
+        this.setBlendMode(state[BLEND_FUNC]);
+    }
+
+    /**
+     * Enables or disabled blending.
+     *
+     * @param {boolean} value - Turn on or off webgl blending.
+     */
+    setBlend(value)
+    {
+        value = value ? 1 : 0;
+
+        if (this.activeState[BLEND] === value)
+        {
+            return;
+        }
+
+        this.activeState[BLEND] = value;
+        this.gl[value ? 'enable' : 'disable'](this.gl.BLEND);
+    }
+
+    /**
+     * Sets the blend mode.
+     *
+     * @param {number} value - The blend mode to set to.
+     */
+    setBlendMode(value)
+    {
+        if (value === this.activeState[BLEND_FUNC])
+        {
+            return;
+        }
+
+        this.activeState[BLEND_FUNC] = value;
+
+        this.gl.blendFunc(this.blendModes[value][0], this.blendModes[value][1]);
+    }
+
+    /**
+     * Sets whether to enable or disable depth test.
+     *
+     * @param {boolean} value - Turn on or off webgl depth testing.
+     */
+    setDepthTest(value)
+    {
+        value = value ? 1 : 0;
+
+        if (this.activeState[DEPTH_TEST] === value)
+        {
+            return;
+        }
+
+        this.activeState[DEPTH_TEST] = value;
+        this.gl[value ? 'enable' : 'disable'](this.gl.DEPTH_TEST);
+    }
+
+    /**
+     * Sets whether to enable or disable cull face.
+     *
+     * @param {boolean} value - Turn on or off webgl cull face.
+     */
+    setCullFace(value)
+    {
+        value = value ? 1 : 0;
+
+        if (this.activeState[CULL_FACE] === value)
+        {
+            return;
+        }
+
+        this.activeState[CULL_FACE] = value;
+        this.gl[value ? 'enable' : 'disable'](this.gl.CULL_FACE);
+    }
+
+    /**
+     * Sets the gl front face.
+     *
+     * @param {boolean} value - true is clockwise and false is counter-clockwise
+     */
+    setFrontFace(value)
+    {
+        value = value ? 1 : 0;
+
+        if (this.activeState[FRONT_FACE] === value)
+        {
+            return;
+        }
+
+        this.activeState[FRONT_FACE] = value;
+        this.gl.frontFace(this.gl[value ? 'CW' : 'CCW']);
+    }
+
+    /**
+     * Disables all the vaos in use
+     *
+     */
+    resetAttributes()
+    {
+        for (let i = 0; i < this.attribState.tempAttribState.length; i++)
+        {
+            this.attribState.tempAttribState[i] = 0;
+        }
+
+        for (let i = 0; i < this.attribState.attribState.length; i++)
+        {
+            this.attribState.attribState[i] = 0;
+        }
+
+        // im going to assume one is always active for performance reasons.
+        for (let i = 1; i < this.maxAttribs; i++)
+        {
+            this.gl.disableVertexAttribArray(i);
+        }
+    }
+
+    // used
+    /**
+     * Resets all the logic and disables the vaos
+     */
+    resetToDefault()
+    {
+        // unbind any VAO if they exist..
+        if (this.nativeVaoExtension)
+        {
+            this.nativeVaoExtension.bindVertexArrayOES(null);
+        }
+
+        // reset all attributs..
+        this.resetAttributes();
+
+        // set active state so we can force overrides of gl state
+        for (let i = 0; i < this.activeState.length; ++i)
+        {
+            this.activeState[i] = 32;
+        }
+
+        this.gl.pixelStorei(this.gl.UNPACK_FLIP_Y_WEBGL, false);
+>>>>>>> upstream/dev
+
+        this.setState(this.defaultState);
+    }
+}

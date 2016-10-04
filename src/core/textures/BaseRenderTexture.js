@@ -1,5 +1,5 @@
-var BaseTexture = require('./BaseTexture'),
-    CONST = require('../const');
+import BaseTexture from './BaseTexture';
+import { RESOLUTION, SCALE_MODES } from '../const';
 
 /**
  * A BaseRenderTexture is a special texture that allows any Pixi display object to be rendered to it.
@@ -11,28 +11,28 @@ var BaseTexture = require('./BaseTexture'),
  * and rotation of the given Display Objects is ignored. For example:
  *
  * ```js
- * var renderer = PIXI.autoDetectRenderer(1024, 1024, { view: canvas, ratio: 1 });
- * var BaserenderTexture = new PIXI.BaseRenderTexture(renderer, 800, 600);
- * var sprite = PIXI.Sprite.fromImage("spinObj_01.png");
+ * let renderer = PIXI.autoDetectRenderer(1024, 1024, { view: canvas, ratio: 1 });
+ * let baseRenderTexture = new PIXI.BaseRenderTexture(renderer, 800, 600);
+ * let sprite = PIXI.Sprite.fromImage("spinObj_01.png");
  *
  * sprite.position.x = 800/2;
  * sprite.position.y = 600/2;
  * sprite.anchor.x = 0.5;
  * sprite.anchor.y = 0.5;
  *
- * BaserenderTexture.render(sprite);
+ * baseRenderTexture.render(sprite);
  * ```
  *
  * The Sprite in this case will be rendered to a position of 0,0. To render this sprite at its actual
  * position a Container should be used:
  *
  * ```js
- * var doc = new PIXI.Container();
+ * let doc = new PIXI.Container();
  *
  * doc.addChild(sprite);
  *
- * var baseRenderTexture = new PIXI.BaserenderTexture(100, 100);
- * var renderTexture = new PIXI.RenderTexture(baseRenderTexture);
+ * let baseRenderTexture = new PIXI.BaseRenderTexture(100, 100);
+ * let renderTexture = new PIXI.RenderTexture(baseRenderTexture);
  *
  * renderer.render(doc, renderTexture);  // Renders to center of RenderTexture
  * ```
@@ -40,11 +40,8 @@ var BaseTexture = require('./BaseTexture'),
  * @class
  * @extends PIXI.BaseTexture
  * @memberof PIXI
- * @param [width=100] {number} The width of the base render texture
- * @param [height=100] {number} The height of the base render texture
- * @param [scaleMode=PIXI.SCALE_MODES.DEFAULT] {number} See {@link PIXI.SCALE_MODES} for possible values
- * @param [resolution=1] {number} The resolution / device pixel ratio of the texture being generated
  */
+<<<<<<< HEAD
 class BaseRenderTexture extends BaseTexture {
     constructor(width, height, scaleMode, resolution)
     {
@@ -54,11 +51,33 @@ class BaseRenderTexture extends BaseTexture {
 
         this.width = width || 100;
         this.height = height || 100;
+=======
+export default class BaseRenderTexture extends BaseTexture
+{
+    /**
+     * @param {number} [width=100] - The width of the base render texture
+     * @param {number} [height=100] - The height of the base render texture
+     * @param {number} [scaleMode=PIXI.SCALE_MODES.DEFAULT] - See {@link PIXI.SCALE_MODES} for possible values
+     * @param {number} [resolution=1] - The resolution / device pixel ratio of the texture being generated
+     */
+    constructor(width = 100, height = 100, scaleMode, resolution)
+    {
+        super(null, scaleMode);
+
+        this.resolution = resolution || RESOLUTION;
+
+        this.width = width;
+        this.height = height;
+>>>>>>> upstream/dev
 
         this.realWidth = this.width * this.resolution;
         this.realHeight = this.height * this.resolution;
 
+<<<<<<< HEAD
         this.scaleMode = scaleMode || CONST.SCALE_MODES.DEFAULT;
+=======
+        this.scaleMode = scaleMode || SCALE_MODES.DEFAULT;
+>>>>>>> upstream/dev
         this.hasLoaded = true;
 
         /**
@@ -84,6 +103,7 @@ class BaseRenderTexture extends BaseTexture {
          */
         this.valid = false;
     }
+<<<<<<< HEAD
 
     /**
      * Resizes the BaseRenderTexture.
@@ -94,10 +114,22 @@ class BaseRenderTexture extends BaseTexture {
     resize(width, height)
     {
 
+=======
+
+    /**
+     * Resizes the BaseRenderTexture.
+     *
+     * @param {number} width - The width to resize to.
+     * @param {number} height - The height to resize to.
+     */
+    resize(width, height)
+    {
+>>>>>>> upstream/dev
         if (width === this.width && height === this.height)
         {
             return;
         }
+<<<<<<< HEAD
 
         this.valid = (width > 0 && height > 0);
 
@@ -114,6 +146,23 @@ class BaseRenderTexture extends BaseTexture {
 
         this.emit('update', this);
 
+=======
+
+        this.valid = (width > 0 && height > 0);
+
+        this.width = width;
+        this.height = height;
+
+        this.realWidth = this.width * this.resolution;
+        this.realHeight = this.height * this.resolution;
+
+        if (!this.valid)
+        {
+            return;
+        }
+
+        this.emit('update', this);
+>>>>>>> upstream/dev
     }
 
     /**
@@ -125,7 +174,11 @@ class BaseRenderTexture extends BaseTexture {
         super.destroy(true);
         this.renderer = null;
     }
+<<<<<<< HEAD
 
 }
 
 module.exports = BaseRenderTexture;
+=======
+}
+>>>>>>> upstream/dev
