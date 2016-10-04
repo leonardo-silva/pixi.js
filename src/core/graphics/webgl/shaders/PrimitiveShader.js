@@ -7,15 +7,11 @@ import Shader from '../../../Shader';
  * @memberof PIXI
  * @extends PIXI.Shader
  */
-<<<<<<< HEAD
-class PrimitiveShader extends Shader {
-=======
 export default class PrimitiveShader extends Shader
 {
     /**
      * @param {WebGLRenderingContext} gl - The webgl shader manager this shader works for.
      */
->>>>>>> upstream/dev
     constructor(gl)
     {
         super(gl,
@@ -35,11 +31,7 @@ export default class PrimitiveShader extends Shader
                 'void main(void){',
                 '   gl_Position = vec4((projectionMatrix * translationMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);',
                 '   vColor = aColor * vec4(tint * alpha, alpha);',
-<<<<<<< HEAD
-                '}'
-=======
                 '}',
->>>>>>> upstream/dev
             ].join('\n'),
             // fragment shader
             [
@@ -47,17 +39,8 @@ export default class PrimitiveShader extends Shader
 
                 'void main(void){',
                 '   gl_FragColor = vColor;',
-<<<<<<< HEAD
-                '}'
-=======
                 '}',
->>>>>>> upstream/dev
             ].join('\n')
         );
     }
 }
-<<<<<<< HEAD
-
-module.exports = PrimitiveShader;
-=======
->>>>>>> upstream/dev

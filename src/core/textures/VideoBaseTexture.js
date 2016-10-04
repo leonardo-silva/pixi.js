@@ -28,71 +28,18 @@ import * as ticker from '../ticker';
  * @extends PIXI.BaseTexture
  * @memberof PIXI
  */
-<<<<<<< HEAD
-class VideoBaseTexture extends BaseTexture {
-=======
 export default class VideoBaseTexture extends BaseTexture
 {
     /**
      * @param {HTMLVideoElement} source - Video source
      * @param {number} [scaleMode=PIXI.SCALE_MODES.DEFAULT] - See {@link PIXI.SCALE_MODES} for possible values
      */
->>>>>>> upstream/dev
     constructor(source, scaleMode)
     {
         if (!source)
         {
             throw new Error('No video source element specified.');
         }
-<<<<<<< HEAD
-
-        // hook in here to check if video is already available.
-        // BaseTexture looks for a source.complete boolean, plus width & height.
-
-        if ((source.readyState === source.HAVE_ENOUGH_DATA || source.readyState === source.HAVE_FUTURE_DATA) && source.width && source.height)
-        {
-            source.complete = true;
-        }
-
-        super(source, scaleMode);
-
-        /**
-         * Should the base texture automatically update itself, set to true by default
-         *
-         * @member {boolean}
-         * @default true
-         */
-        this.autoUpdate = false;
-
-        this._onUpdate = this._onUpdate.bind(this);
-        this._onCanPlay = this._onCanPlay.bind(this);
-
-        if (!source.complete)
-        {
-            source.addEventListener('canplay', this._onCanPlay);
-            source.addEventListener('canplaythrough', this._onCanPlay);
-
-            // started playing..
-            source.addEventListener('play', this._onPlayStart.bind(this));
-            source.addEventListener('pause', this._onPlayStop.bind(this));
-        }
-
-        this.__loaded = false;
-    }
-
-    /**
-     * The internal update loop of the video base texture, only runs when autoUpdate is set to true
-     *
-     * @private
-     */
-    _onUpdate()
-    {
-        if (this.autoUpdate)
-        {
-            window.requestAnimationFrame(this._onUpdate);
-            this.update();
-        }
-=======
 
         // hook in here to check if video is already available.
         // BaseTexture looks for a source.complete boolean, plus width & height.
@@ -161,7 +108,6 @@ export default class VideoBaseTexture extends BaseTexture
     _isSourceReady()
     {
         return this.source.readyState === 3 || this.source.readyState === 4;
->>>>>>> upstream/dev
     }
 
     /**
@@ -172,26 +118,15 @@ export default class VideoBaseTexture extends BaseTexture
     _onPlayStart()
     {
         // Just in case the video has not recieved its can play even yet..
-<<<<<<< HEAD
-        if(!this.hasLoaded)
-=======
         if (!this.hasLoaded)
->>>>>>> upstream/dev
         {
             this._onCanPlay();
         }
 
-<<<<<<< HEAD
-        if (!this.autoUpdate)
-        {
-            window.requestAnimationFrame(this._onUpdate);
-            this.autoUpdate = true;
-=======
         if (!this._isAutoUpdating && this.autoUpdate)
         {
             ticker.shared.add(this.update, this);
             this._isAutoUpdating = true;
->>>>>>> upstream/dev
         }
     }
 
@@ -202,15 +137,11 @@ export default class VideoBaseTexture extends BaseTexture
      */
     _onPlayStop()
     {
-<<<<<<< HEAD
-        this.autoUpdate = false;
-=======
         if (this._isAutoUpdating)
         {
             ticker.shared.remove(this.update, this);
             this._isAutoUpdating = false;
         }
->>>>>>> upstream/dev
     }
 
     /**
@@ -221,7 +152,6 @@ export default class VideoBaseTexture extends BaseTexture
     _onCanPlay()
     {
         this.hasLoaded = true;
-<<<<<<< HEAD
 
         if (this.source)
         {
@@ -231,27 +161,12 @@ export default class VideoBaseTexture extends BaseTexture
             this.width = this.source.videoWidth;
             this.height = this.source.videoHeight;
 
-            this.source.play();
-
-=======
-
-        if (this.source)
-        {
-            this.source.removeEventListener('canplay', this._onCanPlay);
-            this.source.removeEventListener('canplaythrough', this._onCanPlay);
-
-            this.width = this.source.videoWidth;
-            this.height = this.source.videoHeight;
-
->>>>>>> upstream/dev
             // prevent multiple loaded dispatches..
             if (!this.__loaded)
             {
                 this.__loaded = true;
                 this.emit('loaded', this);
             }
-<<<<<<< HEAD
-=======
 
             if (this._isSourcePlaying())
             {
@@ -261,7 +176,6 @@ export default class VideoBaseTexture extends BaseTexture
             {
                 this.source.play();
             }
->>>>>>> upstream/dev
         }
     }
 
@@ -271,11 +185,6 @@ export default class VideoBaseTexture extends BaseTexture
      */
     destroy()
     {
-<<<<<<< HEAD
-        if (this.source && this.source._pixiId)
-        {
-            delete utils.BaseTextureCache[ this.source._pixiId ];
-=======
         if (this._isAutoUpdating)
         {
             ticker.shared.remove(this.update, this);
@@ -284,7 +193,6 @@ export default class VideoBaseTexture extends BaseTexture
         if (this.source && this.source._pixiId)
         {
             delete BaseTextureCache[this.source._pixiId];
->>>>>>> upstream/dev
             delete this.source._pixiId;
         }
 
@@ -295,74 +203,14 @@ export default class VideoBaseTexture extends BaseTexture
      * Mimic Pixi BaseTexture.from.... method.
      *
      * @static
-<<<<<<< HEAD
-     * @param video {HTMLVideoElement} Video to create texture from
-     * @param [scaleMode=PIXI.SCALE_MODES.DEFAULT] {number} See {@link PIXI.SCALE_MODES} for possible values
-=======
      * @param {HTMLVideoElement} video - Video to create texture from
      * @param {number} [scaleMode=PIXI.SCALE_MODES.DEFAULT] - See {@link PIXI.SCALE_MODES} for possible values
->>>>>>> upstream/dev
      * @return {PIXI.VideoBaseTexture} Newly created VideoBaseTexture
      */
     static fromVideo(video, scaleMode)
     {
         if (!video._pixiId)
         {
-<<<<<<< HEAD
-            video._pixiId = 'video_' + utils.uid();
-        }
-
-        var baseTexture = utils.BaseTextureCache[video._pixiId];
-
-        if (!baseTexture)
-        {
-            baseTexture = new VideoBaseTexture(video, scaleMode);
-            utils.BaseTextureCache[ video._pixiId ] = baseTexture;
-        }
-
-        return baseTexture;
-    }
-
-    /**
-     * Helper function that creates a new BaseTexture based on the given video element.
-     * This BaseTexture can then be used to create a texture
-     *
-     * @static
-     * @param videoSrc {string|object|string[]|object[]} The URL(s) for the video.
-     * @param [videoSrc.src] {string} One of the source urls for the video
-     * @param [videoSrc.mime] {string} The mimetype of the video (e.g. 'video/mp4'). If not specified
-     *  the url's extension will be used as the second part of the mime type.
-     * @param scaleMode {number} See {@link PIXI.SCALE_MODES} for possible values
-     * @return {PIXI.VideoBaseTexture} Newly created VideoBaseTexture
-     */
-    static fromUrl(videoSrc, scaleMode)
-    {
-        var video = document.createElement('video');
-
-        // array of objects or strings
-        if (Array.isArray(videoSrc))
-        {
-            for (var i = 0; i < videoSrc.length; ++i)
-            {
-                video.appendChild(createSource(videoSrc[i].src || videoSrc[i], videoSrc[i].mime));
-            }
-        }
-        // single object or string
-        else
-        {
-            video.appendChild(createSource(videoSrc.src || videoSrc, videoSrc.mime));
-        }
-
-        video.load();
-        video.play();
-
-        return VideoBaseTexture.fromVideo(video, scaleMode);
-    }
-
-}
-
-module.exports = VideoBaseTexture;
-=======
             video._pixiId = `video_${uid()}`;
         }
 
@@ -450,7 +298,6 @@ module.exports = VideoBaseTexture;
         }
     }
 }
->>>>>>> upstream/dev
 
 VideoBaseTexture.fromUrls = VideoBaseTexture.fromUrl;
 

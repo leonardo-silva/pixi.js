@@ -13,15 +13,11 @@ const glslify = require('glslify'); // eslint-disable-line no-undef
  * @extends PIXI.Filter
  * @memberof PIXI.filters
  */
-<<<<<<< HEAD
-class NoiseFilter extends core.Filter {
-=======
 export default class NoiseFilter extends core.Filter
 {
     /**
      *
      */
->>>>>>> upstream/dev
     constructor()
     {
         super(
@@ -30,18 +26,9 @@ export default class NoiseFilter extends core.Filter
             // fragment shader
             glslify('./noise.frag')
         );
-<<<<<<< HEAD
 
         this.noise = 0.5;
     }
-}
-
-module.exports = NoiseFilter;
-=======
-
-        this.noise = 0.5;
-    }
->>>>>>> upstream/dev
 
     /**
      * The amount of noise to apply.

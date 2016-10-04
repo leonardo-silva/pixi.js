@@ -6,54 +6,6 @@
  * @class
  * @memberof PIXI
  */
-<<<<<<< HEAD
-class ObservablePoint {
-    constructor(cb, scope, x, y)
-    {
-        this._x = x || 0;
-        this._y = y || 0;
-
-        this.cb = cb;
-        this.scope = scope;
-    }
-
-    /**
-     * Sets the point to a new x and y position.
-     * If y is omitted, both x and y will be set to x.
-     *
-     * @param [x=0] {number} position of the point on the x axis
-     * @param [y=0] {number} position of the point on the y axis
-     */
-    set(x, y)
-    {
-        var _x = x || 0;
-        var _y = y || ( (y !== 0) ? _x : 0 );
-        if (this._x !== _x || this._y !== _y)
-        {
-            this._x = _x;
-            this._y = _y;
-            this.cb.call(this.scope);
-        }
-    }
-
-    /**
-     * Copies the data from another point
-     *
-     * @param point {PIXI.Point|PIXI.ObservablePoint} point to copy from
-     */
-    copy(point)
-    {
-        if (this._x !== point.x || this._y !== point.y)
-        {
-            this._x = point.x;
-            this._y = point.y;
-            this.cb.call(this.scope);
-        }
-    }
-}
-
-module.exports = ObservablePoint;
-=======
 export default class ObservablePoint
 {
     /**
@@ -70,7 +22,6 @@ export default class ObservablePoint
         this.cb = cb;
         this.scope = scope;
     }
->>>>>>> upstream/dev
 
     /**
      * Sets the point to a new x and y position.
@@ -84,9 +35,6 @@ export default class ObservablePoint
         const _x = x || 0;
         const _y = y || ((y !== 0) ? _x : 0);
 
-<<<<<<< HEAD
-Object.defineProperties(ObservablePoint.prototype, {
-=======
         if (this._x !== _x || this._y !== _y)
         {
             this._x = _x;
@@ -95,7 +43,6 @@ Object.defineProperties(ObservablePoint.prototype, {
         }
     }
 
->>>>>>> upstream/dev
     /**
      * Copies the data from another point
      *
@@ -135,9 +82,6 @@ Object.defineProperties(ObservablePoint.prototype, {
             this.cb.call(this.scope);
         }
     }
-<<<<<<< HEAD
-});
-=======
 
     /**
      * The position of the displayObject on the x axis relative to the local coordinates of the parent.
@@ -164,4 +108,3 @@ Object.defineProperties(ObservablePoint.prototype, {
         }
     }
 }
->>>>>>> upstream/dev

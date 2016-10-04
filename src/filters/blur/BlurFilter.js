@@ -10,37 +10,6 @@ import BlurYFilter from './BlurYFilter';
  * @extends PIXI.Filter
  * @memberof PIXI.filters
  */
-<<<<<<< HEAD
-class BlurFilter extends core.Filter {
-    constructor(strength, quality, resolution)
-    {
-        super();
-
-        this.blurXFilter = new BlurXFilter();
-        this.blurYFilter = new BlurYFilter();
-        this.resolution = 1;
-
-        this.padding = 0;
-        this.resolution = resolution || 1;
-        this.quality = quality || 4;
-        this.blur = strength || 8;
-    }
-
-    apply(filterManager, input, output)
-    {
-
-        var renderTarget = filterManager.getRenderTarget(true);
-
-        this.blurXFilter.apply(filterManager, input, renderTarget, true);
-        this.blurYFilter.apply(filterManager, renderTarget, output, false);
-
-        filterManager.returnRenderTarget(renderTarget);
-    }
-
-}
-
-module.exports = BlurFilter;
-=======
 export default class BlurFilter extends core.Filter
 {
     /**
@@ -78,7 +47,6 @@ export default class BlurFilter extends core.Filter
 
         filterManager.returnRenderTarget(renderTarget);
     }
->>>>>>> upstream/dev
 
     /**
      * Sets the strength of both the blurX and blurY properties simultaneously

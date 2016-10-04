@@ -13,58 +13,6 @@ const DEFAULT_UPLOADS_PER_FRAME = 4;
  * @class
  * @memberof PIXI
  */
-<<<<<<< HEAD
-class CanvasPrepare {
-    constructor()
-    {
-    }
-
-    /**
-     * Stub method for upload.
-     * @param {Function|PIXI.DisplayObject|PIXI.Container} item Either
-     *        the container or display object to search for items to upload or
-     *        the callback function, if items have been added using `prepare.add`.
-     * @param {Function} done When completed
-     */
-    upload(displayObject, done)
-    {
-        if (typeof displayObject === 'function')
-        {
-            done = displayObject;
-            displayObject = null;
-        }
-        done();
-    }
-
-    /**
-     * Stub method for registering hooks.
-     * @return {PIXI.CanvasPrepare} Instance of plugin for chaining.
-     */
-    register()
-    {
-        return this;
-    }
-
-    /**
-     * Stub method for adding items.
-     * @return {PIXI.CanvasPrepare} Instance of plugin for chaining.
-     */
-    add()
-    {
-        return this;
-    }
-
-    /**
-     * Stub method for destroying plugin.
-     */
-    destroy()
-    {
-    }
-
-}
-
-module.exports = CanvasPrepare;
-=======
 export default class CanvasPrepare
 {
     /**
@@ -380,6 +328,5 @@ function findBaseTextures(item, queue)
 
     return false;
 }
->>>>>>> upstream/dev
 
 core.CanvasRenderer.registerPlugin('prepare', CanvasPrepare);

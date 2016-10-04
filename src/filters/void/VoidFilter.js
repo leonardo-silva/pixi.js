@@ -10,15 +10,11 @@ const glslify = require('glslify'); // eslint-disable-line no-undef
  * @extends PIXI.Filter
  * @memberof PIXI.filters
  */
-<<<<<<< HEAD
-class VoidFilter extends core.Filter {
-=======
 export default class VoidFilter extends core.Filter
 {
     /**
      *
      */
->>>>>>> upstream/dev
     constructor()
     {
         super(
@@ -31,8 +27,3 @@ export default class VoidFilter extends core.Filter
         this.glShaderKey = 'void';
     }
 }
-<<<<<<< HEAD
-
-module.exports = VoidFilter;
-=======
->>>>>>> upstream/dev

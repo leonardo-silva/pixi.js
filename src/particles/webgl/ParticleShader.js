@@ -5,15 +5,11 @@ import Shader from '../../core/Shader';
  * @extends PIXI.Shader
  * @memberof PIXI
  */
-<<<<<<< HEAD
-class ParticleShader extends Shader {
-=======
 export default class ParticleShader extends Shader
 {
     /**
      * @param {PIXI.Shader} gl - The webgl shader manager this shader works for.
      */
->>>>>>> upstream/dev
     constructor(gl)
     {
         super(
@@ -44,17 +40,10 @@ export default class ParticleShader extends Shader
 
                 '   vTextureCoord = aTextureCoord;',
                 '   vColor = aColor;',
-<<<<<<< HEAD
-                '}'
-            ].join('\n'),
-            // hello
-             [
-=======
                 '}',
             ].join('\n'),
             // hello
             [
->>>>>>> upstream/dev
                 'varying vec2 vTextureCoord;',
                 'varying float vColor;',
 
@@ -65,21 +54,8 @@ export default class ParticleShader extends Shader
                 '  vec4 color = texture2D(uSampler, vTextureCoord) * vColor * uAlpha;',
                 '  if (color.a == 0.0) discard;',
                 '  gl_FragColor = color;',
-<<<<<<< HEAD
-                '}'
-            ].join('\n')
-        );
-
-        // TEMP HACK
-
-    }
-}
-
-module.exports = ParticleShader;
-=======
                 '}',
             ].join('\n')
         );
     }
 }
->>>>>>> upstream/dev

@@ -19,162 +19,6 @@ import ObservablePoint from '../core/math/ObservablePoint';
  * @extends PIXI.Container
  * @memberof PIXI.extras
  */
-<<<<<<< HEAD
-class BitmapText extends core.Container {
-    constructor(text, style)
-    {
-        super();
-
-        style = style || {};
-
-        /**
-         * The width of the overall text, different from fontSize,
-         * which is defined in the style object
-         *
-         * @member {number}
-         * @readonly
-         */
-        this.textWidth = 0;
-
-        /**
-         * The height of the overall text, different from fontSize,
-         * which is defined in the style object
-         *
-         * @member {number}
-         * @readonly
-         */
-        this.textHeight = 0;
-
-        /**
-         * Private tracker for the letter sprite pool.
-         *
-         * @member {PIXI.Sprite[]}
-         * @private
-         */
-        this._glyphs = [];
-
-        /**
-         * Private tracker for the current style.
-         *
-         * @member {object}
-         * @private
-         */
-        this._font = {
-            tint: style.tint !== undefined ? style.tint : 0xFFFFFF,
-            align: style.align || 'left',
-            name: null,
-            size: 0
-        };
-
-        /**
-         * Private tracker for the current font.
-         *
-         * @member {object}
-         * @private
-         */
-        this.font = style.font; // run font setter
-
-        /**
-         * Private tracker for the current text.
-         *
-         * @member {string}
-         * @private
-         */
-        this._text = text;
-
-        /**
-         * The max width of this bitmap text in pixels. If the text provided is longer than the value provided, line breaks will be automatically inserted in the last whitespace.
-         * Disable by setting value to 0
-         *
-         * @member {number}
-         */
-        this.maxWidth = 0;
-
-        /**
-         * The max line height. This is useful when trying to use the total height of the Text, ie: when trying to vertically align.
-         *
-         * @member {number}
-         */
-        this.maxLineHeight = 0;
-
-        /**
-         * Text anchor. read-only
-         *
-         * @member {PIXI.ObservablePoint}
-         * @private
-         */
-        this._anchor = new ObservablePoint(this.makeDirty, this, 0, 0);
-
-        /**
-         * The dirty state of this object.
-         *
-         * @member {boolean}
-         */
-        this.dirty = false;
-
-        this.updateText();
-    }
-
-    /**
-     * Renders text and updates it when needed
-     *
-     * @private
-     */
-    updateText()
-    {
-        var data = BitmapText.fonts[this._font.name];
-        var pos = new core.Point();
-        var prevCharCode = null;
-        var chars = [];
-        var lastLineWidth = 0;
-        var maxLineWidth = 0;
-        var lineWidths = [];
-        var line = 0;
-        var scale = this._font.size / data.size;
-        var lastSpace = -1;
-        var lastSpaceWidth = 0;
-        var maxLineHeight = 0;
-
-        for (var i = 0; i < this.text.length; i++)
-        {
-            var charCode = this.text.charCodeAt(i);
-            
-            if(/(\s)/.test(this.text.charAt(i))){
-                lastSpace = i;
-                lastSpaceWidth = lastLineWidth;
-            }
-
-            if (/(?:\r\n|\r|\n)/.test(this.text.charAt(i)))
-            {
-                lineWidths.push(lastLineWidth);
-                maxLineWidth = Math.max(maxLineWidth, lastLineWidth);
-                line++;
-
-                pos.x = 0;
-                pos.y += data.lineHeight;
-                prevCharCode = null;
-                continue;
-            }
-
-            if (lastSpace !== -1 && this.maxWidth > 0 && pos.x * scale > this.maxWidth)
-            {
-                core.utils.removeItems(chars, lastSpace, i - lastSpace);
-                i = lastSpace;
-                lastSpace = -1;
-
-                lineWidths.push(lastSpaceWidth);
-                maxLineWidth = Math.max(maxLineWidth, lastSpaceWidth);
-                line++;
-
-                pos.x = 0;
-                pos.y += data.lineHeight;
-                prevCharCode = null;
-                continue;
-            }
-
-            var charData = data.chars[charCode];
-
-=======
 export default class BitmapText extends core.Container
 {
     /**
@@ -343,7 +187,6 @@ export default class BitmapText extends core.Container
 
             const charData = data.chars[charCode];
 
->>>>>>> upstream/dev
             if (!charData)
             {
                 continue;
@@ -354,16 +197,12 @@ export default class BitmapText extends core.Container
                 pos.x += charData.kerning[prevCharCode];
             }
 
-<<<<<<< HEAD
-            chars.push({texture:charData.texture, line: line, charCode: charCode, position: new core.Point(pos.x + charData.xOffset, pos.y + charData.yOffset)});
-=======
             chars.push({
                 texture: charData.texture,
                 line,
                 charCode,
                 position: new core.Point(pos.x + charData.xOffset, pos.y + charData.yOffset),
             });
->>>>>>> upstream/dev
             lastLineWidth = pos.x + (charData.texture.width + charData.xOffset);
             pos.x += charData.xAdvance;
             maxLineHeight = Math.max(maxLineHeight, (charData.yOffset + charData.texture.height));
@@ -373,19 +212,11 @@ export default class BitmapText extends core.Container
         lineWidths.push(lastLineWidth);
         maxLineWidth = Math.max(maxLineWidth, lastLineWidth);
 
-<<<<<<< HEAD
-        var lineAlignOffsets = [];
-
-        for (i = 0; i <= line; i++)
-        {
-            var alignOffset = 0;
-=======
         const lineAlignOffsets = [];
 
         for (let i = 0; i <= line; i++)
         {
             let alignOffset = 0;
->>>>>>> upstream/dev
 
             if (this._font.align === 'right')
             {
@@ -399,21 +230,12 @@ export default class BitmapText extends core.Container
             lineAlignOffsets.push(alignOffset);
         }
 
-<<<<<<< HEAD
-        var lenChars = chars.length;
-        var tint = this.tint;
-
-        for (i = 0; i < lenChars; i++)
-        {
-            var c = this._glyphs[i]; // get the next glyph sprite
-=======
         const lenChars = chars.length;
         const tint = this.tint;
 
         for (let i = 0; i < lenChars; i++)
         {
             let c = this._glyphs[i]; // get the next glyph sprite
->>>>>>> upstream/dev
 
             if (c)
             {
@@ -437,11 +259,7 @@ export default class BitmapText extends core.Container
         }
 
         // remove unnecessary children.
-<<<<<<< HEAD
-        for (i = lenChars; i < this._glyphs.length; ++i)
-=======
         for (let i = lenChars; i < this._glyphs.length; ++i)
->>>>>>> upstream/dev
         {
             this.removeChild(this._glyphs[i]);
         }
@@ -452,11 +270,7 @@ export default class BitmapText extends core.Container
         // apply anchor
         if (this.anchor.x !== 0 || this.anchor.y !== 0)
         {
-<<<<<<< HEAD
-            for (i = 0; i < lenChars; i++)
-=======
             for (let i = 0; i < lenChars; i++)
->>>>>>> upstream/dev
             {
                 this._glyphs[i].x -= this.textWidth * this.anchor.x;
                 this._glyphs[i].y -= this.textHeight * this.anchor.y;
@@ -481,17 +295,10 @@ export default class BitmapText extends core.Container
      *
      * @return {PIXI.Rectangle} The rectangular bounding area
      */
-<<<<<<< HEAD
-
-    getLocalBounds()
-    {
-        this.validate();
-=======
     getLocalBounds()
     {
         this.validate();
 
->>>>>>> upstream/dev
         return super.getLocalBounds();
     }
 
@@ -509,15 +316,6 @@ export default class BitmapText extends core.Container
         }
     }
 
-<<<<<<< HEAD
-    makeDirty() {
-        this.dirty = true;
-    }
-
-}
-
-module.exports = BitmapText;
-=======
     /**
      * The tint of the BitmapText object
      *
@@ -528,7 +326,6 @@ module.exports = BitmapText;
     {
         return this._font.tint;
     }
->>>>>>> upstream/dev
 
     /**
      * Sets the tint.
@@ -603,25 +400,6 @@ module.exports = BitmapText;
      * @member {string|object}
      * @memberof PIXI.extras.BitmapText#
      */
-<<<<<<< HEAD
-    text: {
-        get: function ()
-        {
-            return this._text;
-        },
-        set: function (value)
-        {
-            value = value.toString() || ' ';
-            if (this._text === value)
-            {
-                return;
-            }
-            this._text = value;
-            this.dirty = true;
-        }
-    }
-});
-=======
     get font()
     {
         return this._font;
@@ -682,6 +460,5 @@ module.exports = BitmapText;
         this.dirty = true;
     }
 }
->>>>>>> upstream/dev
 
 BitmapText.fonts = {};

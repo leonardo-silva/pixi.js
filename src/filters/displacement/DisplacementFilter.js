@@ -12,53 +12,6 @@ const glslify = require('glslify'); // eslint-disable-line no-undef
  * @extends PIXI.Filter
  * @memberof PIXI.filters
  */
-<<<<<<< HEAD
-class DisplacementFilter extends core.Filter {
-    constructor(sprite, scale)
-    {
-        var maskMatrix = new core.Matrix();
-        sprite.renderable = false;
-
-        super(
-            // vertex shader
-    //        glslify('./displacement.vert'),
-            glslify('../fragments/default-filter-matrix.vert'),
-            // fragment shader
-            glslify('./displacement.frag')
-
-        );
-
-        this.maskSprite = sprite;
-        this.maskMatrix = maskMatrix;
-
-        this.uniforms.mapSampler = sprite.texture;
-        this.uniforms.filterMatrix = maskMatrix.toArray(true);
-        this.uniforms.scale = { x: 1, y: 1 };
-
-        if (scale === null || scale === undefined)
-        {
-            scale = 20;
-        }
-
-        this.scale = new core.Point(scale, scale);
-    }
-
-    apply(filterManager, input, output)
-    {
-        var ratio =  (1/output.destinationFrame.width) * (output.size.width/input.size.width); /// // *  2 //4//this.strength / 4 / this.passes * (input.frame.width / input.size.width);
-
-        this.uniforms.filterMatrix = filterManager.calculateSpriteMatrix(this.maskMatrix, this.maskSprite);
-        this.uniforms.scale.x = this.scale.x * ratio;
-        this.uniforms.scale.y = this.scale.y * ratio;
-
-         // draw the filter...
-        filterManager.applyFilter(this, input, output);
-    }
-
-}
-
-module.exports = DisplacementFilter;
-=======
 export default class DisplacementFilter extends core.Filter
 {
     /**
@@ -111,7 +64,6 @@ export default class DisplacementFilter extends core.Filter
          // draw the filter...
         filterManager.applyFilter(this, input, output);
     }
->>>>>>> upstream/dev
 
     /**
      * The texture used for the displacement map. Must be power of 2 sized texture.

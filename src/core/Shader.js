@@ -30,15 +30,6 @@ function checkPrecision(src)
  * @extends GLShader
  * @memberof PIXI
  */
-<<<<<<< HEAD
-class Shader extends GLShader {
-    constructor(gl, vertexSrc, fragmentSrc) {
-        super(gl, checkPrecision(vertexSrc), checkPrecision(fragmentSrc));
-    }
-}
-
-module.exports = Shader;
-=======
 export default class Shader extends GLShader
 {
     /**
@@ -52,4 +43,3 @@ export default class Shader extends GLShader
         super(gl, checkPrecision(vertexSrc), checkPrecision(fragmentSrc));
     }
 }
->>>>>>> upstream/dev

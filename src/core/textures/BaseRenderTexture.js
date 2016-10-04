@@ -41,17 +41,6 @@ import { RESOLUTION, SCALE_MODES } from '../const';
  * @extends PIXI.BaseTexture
  * @memberof PIXI
  */
-<<<<<<< HEAD
-class BaseRenderTexture extends BaseTexture {
-    constructor(width, height, scaleMode, resolution)
-    {
-        super(null, scaleMode);
-
-        this.resolution = resolution || CONST.RESOLUTION;
-
-        this.width = width || 100;
-        this.height = height || 100;
-=======
 export default class BaseRenderTexture extends BaseTexture
 {
     /**
@@ -68,16 +57,11 @@ export default class BaseRenderTexture extends BaseTexture
 
         this.width = width;
         this.height = height;
->>>>>>> upstream/dev
 
         this.realWidth = this.width * this.resolution;
         this.realHeight = this.height * this.resolution;
 
-<<<<<<< HEAD
-        this.scaleMode = scaleMode || CONST.SCALE_MODES.DEFAULT;
-=======
         this.scaleMode = scaleMode || SCALE_MODES.DEFAULT;
->>>>>>> upstream/dev
         this.hasLoaded = true;
 
         /**
@@ -103,18 +87,6 @@ export default class BaseRenderTexture extends BaseTexture
          */
         this.valid = false;
     }
-<<<<<<< HEAD
-
-    /**
-     * Resizes the BaseRenderTexture.
-     *
-     * @param width {number} The width to resize to.
-     * @param height {number} The height to resize to.
-     */
-    resize(width, height)
-    {
-
-=======
 
     /**
      * Resizes the BaseRenderTexture.
@@ -124,12 +96,10 @@ export default class BaseRenderTexture extends BaseTexture
      */
     resize(width, height)
     {
->>>>>>> upstream/dev
         if (width === this.width && height === this.height)
         {
             return;
         }
-<<<<<<< HEAD
 
         this.valid = (width > 0 && height > 0);
 
@@ -145,24 +115,6 @@ export default class BaseRenderTexture extends BaseTexture
         }
 
         this.emit('update', this);
-
-=======
-
-        this.valid = (width > 0 && height > 0);
-
-        this.width = width;
-        this.height = height;
-
-        this.realWidth = this.width * this.resolution;
-        this.realHeight = this.height * this.resolution;
-
-        if (!this.valid)
-        {
-            return;
-        }
-
-        this.emit('update', this);
->>>>>>> upstream/dev
     }
 
     /**
@@ -174,11 +126,4 @@ export default class BaseRenderTexture extends BaseTexture
         super.destroy(true);
         this.renderer = null;
     }
-<<<<<<< HEAD
-
 }
-
-module.exports = BaseRenderTexture;
-=======
-}
->>>>>>> upstream/dev

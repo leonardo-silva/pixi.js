@@ -20,98 +20,6 @@ import ParticleBuffer from './ParticleBuffer';
  * @private
  * @memberof PIXI
  */
-<<<<<<< HEAD
-class ParticleRenderer extends core.ObjectRenderer {
-    constructor(renderer)
-    {
-        super(renderer);
-
-        // 65535 is max vertex index in the index buffer (see ParticleRenderer)
-        // so max number of particles is 65536 / 4 = 16384
-        // and max number of element in the index buffer is 16384 * 6 = 98304
-        // Creating a full index buffer, overhead is 98304 * 2 = 196Ko
-        // var numIndices = 98304;
-
-        /**
-         * The default shader that is used if a sprite doesn't have a more specific one.
-         *
-         * @member {PIXI.Shader}
-         */
-        this.shader = null;
-
-        this.indexBuffer = null;
-
-        this.properties = null;
-
-        this.tempMatrix = new core.Matrix();
-
-        this.CONTEXT_UID = 0;
-    }
-
-    /**
-     * When there is a WebGL context change
-     *
-     * @private
-     */
-    onContextChange()
-    {
-        var gl = this.renderer.gl;
-
-        this.CONTEXT_UID = this.renderer.CONTEXT_UID;
-
-        // setup default shader
-        this.shader = new ParticleShader(gl);
-
-        this.properties = [
-            // verticesData
-            {
-                attribute:this.shader.attributes.aVertexPosition,
-                size:2,
-                uploadFunction:this.uploadVertices,
-                offset:0
-            },
-            // positionData
-            {
-                attribute:this.shader.attributes.aPositionCoord,
-                size:2,
-                uploadFunction:this.uploadPosition,
-                offset:0
-            },
-            // rotationData
-            {
-                attribute:this.shader.attributes.aRotation,
-                size:1,
-                uploadFunction:this.uploadRotation,
-                offset:0
-            },
-            // uvsData
-            {
-                attribute:this.shader.attributes.aTextureCoord,
-                size:2,
-                uploadFunction:this.uploadUvs,
-                offset:0
-            },
-            // alphaData
-            {
-                attribute:this.shader.attributes.aColor,
-                size:1,
-                uploadFunction:this.uploadAlpha,
-                offset:0
-            }
-        ];
-
-    }
-
-    /**
-     * Starts a new particle batch.
-     *
-     */
-    start()
-    {
-        this.renderer.bindShader(this.shader);
-    }
-
-=======
 export default class ParticleRenderer extends core.ObjectRenderer
 {
     /**
@@ -204,47 +112,10 @@ export default class ParticleRenderer extends core.ObjectRenderer
     {
         this.renderer.bindShader(this.shader);
     }
->>>>>>> upstream/dev
 
     /**
      * Renders the particle container object.
      *
-<<<<<<< HEAD
-     * @param container {PIXI.ParticleContainer} The container to render using this ParticleRenderer
-     */
-    render(container)
-    {
-        var children = container.children,
-            totalChildren = children.length,
-            maxSize = container._maxSize,
-            batchSize = container._batchSize;
-
-        if(totalChildren === 0)
-        {
-            return;
-        }
-        else if(totalChildren > maxSize)
-        {
-            totalChildren = maxSize;
-        }
-
-        var buffers = container._glBuffers[this.renderer.CONTEXT_UID];
-
-        if(!buffers)
-        {
-            buffers = container._glBuffers[this.renderer.CONTEXT_UID] = this.generateBuffers( container );
-        }
-
-        // if the uvs have not updated then no point rendering just yet!
-        this.renderer.setBlendMode(container.blendMode);
-
-        var gl = this.renderer.gl;
-
-        var m = container.worldTransform.copy( this.tempMatrix );
-        m.prepend( this.renderer._activeRenderTarget.projectionMatrix );
-        this.shader.uniforms.projectionMatrix = m.toArray(true);
-        this.shader.uniforms.uAlpha = container.worldAlpha;
-=======
      * @param {PIXI.ParticleContainer} container - The container to render using this ParticleRenderer
      */
     render(container)
@@ -298,47 +169,10 @@ export default class ParticleRenderer extends core.ObjectRenderer
             }
 
             const buffer = buffers[j];
->>>>>>> upstream/dev
 
             // we always upload the dynamic
             buffer.uploadDynamic(children, i, amount);
 
-<<<<<<< HEAD
-        // make sure the texture is bound..
-        var baseTexture = children[0]._texture.baseTexture;
-
-        this.renderer.bindTexture(baseTexture);
-
-        // now lets upload and render the buffers..
-        for (var i = 0, j = 0; i < totalChildren; i += batchSize, j += 1)
-        {
-            var amount = ( totalChildren - i);
-            if(amount > batchSize)
-            {
-                amount = batchSize;
-            }
-
-            var buffer = buffers[j];
-
-            // we always upload the dynamic
-            buffer.uploadDynamic(children, i, amount);
-
-            // we only upload the static content when we have to!
-            if(container._bufferToUpdate === j)
-            {
-                buffer.uploadStatic(children, i, amount);
-                container._bufferToUpdate = j + 1;
-            }
-
-            // bind the buffer
-            buffer.vao.bind()
-            .draw(gl.TRIANGLES, amount * 6)
-            .unbind();
-
-             // now draw those suckas!
-           // gl.drawElements(gl.TRIANGLES, amount * 6, gl.UNSIGNED_SHORT, 0);
-           //  this.renderer.drawCount++;
-=======
             // we only upload the static content when we have to!
             if (container._bufferToUpdate === j)
             {
@@ -354,27 +188,12 @@ export default class ParticleRenderer extends core.ObjectRenderer
             // now draw those suckas!
             // gl.drawElements(gl.TRIANGLES, amount * 6, gl.UNSIGNED_SHORT, 0);
             //  this.renderer.drawCount++;
->>>>>>> upstream/dev
         }
     }
 
     /**
      * Creates one particle buffer for each child in the container we want to render and updates internal properties
      *
-<<<<<<< HEAD
-     * @param container {PIXI.ParticleContainer} The container to render using this ParticleRenderer
-     */
-    generateBuffers(container)
-    {
-        var gl = this.renderer.gl,
-            buffers = [],
-            size = container._maxSize,
-            batchSize = container._batchSize,
-            dynamicPropertyFlags = container._properties,
-            i;
-
-        for (i = 0; i < size; i += batchSize)
-=======
      * @param {PIXI.ParticleContainer} container - The container to render using this ParticleRenderer
      * @return {PIXI.ParticleBuffer[]} The buffers
      */
@@ -387,7 +206,6 @@ export default class ParticleRenderer extends core.ObjectRenderer
         const dynamicPropertyFlags = container._properties;
 
         for (let i = 0; i < size; i += batchSize)
->>>>>>> upstream/dev
         {
             buffers.push(new ParticleBuffer(gl, this.properties, dynamicPropertyFlags, batchSize));
         }
@@ -398,50 +216,6 @@ export default class ParticleRenderer extends core.ObjectRenderer
     /**
      * Uploads the verticies.
      *
-<<<<<<< HEAD
-     * @param children {PIXI.DisplayObject[]} the array of display objects to render
-     * @param startIndex {number} the index to start from in the children array
-     * @param amount {number} the amount of children that will have their vertices uploaded
-     * @param array {number[]}
-     * @param stride {number}
-     * @param offset {number}
-     */
-    uploadVertices(children, startIndex, amount, array, stride, offset)
-    {
-        var sprite,
-            texture,
-            trim,
-            orig,
-            sx,
-            sy,
-            w0, w1, h0, h1;
-
-        for (var i = 0; i < amount; i++) {
-
-            sprite = children[startIndex + i];
-            texture = sprite._texture;
-            sx = sprite.scale.x;
-            sy = sprite.scale.y;
-            trim = texture.trim;
-            orig = texture.orig;
-
-            if (trim)
-            {
-                // if the sprite is trimmed and is not a tilingsprite then we need to add the extra space before transforming the sprite coords..
-                w1 = trim.x - sprite.anchor.x * orig.width;
-                w0 = w1 + trim.width;
-
-                h1 = trim.y - sprite.anchor.y * orig.height;
-                h0 = h1 + trim.height;
-
-            }
-            else
-            {
-                w0 = (orig.width ) * (1-sprite.anchor.x);
-                w1 = (orig.width ) * -sprite.anchor.x;
-
-                h0 = orig.height * (1-sprite.anchor.y);
-=======
      * @param {PIXI.DisplayObject[]} children - the array of display objects to render
      * @param {number} startIndex - the index to start from in the children array
      * @param {number} amount - the amount of children that will have their vertices uploaded
@@ -481,7 +255,6 @@ export default class ParticleRenderer extends core.ObjectRenderer
                 w1 = (orig.width) * -sprite.anchor.x;
 
                 h0 = orig.height * (1 - sprite.anchor.y);
->>>>>>> upstream/dev
                 h1 = orig.height * -sprite.anchor.y;
             }
 
@@ -491,49 +264,6 @@ export default class ParticleRenderer extends core.ObjectRenderer
             array[offset + stride] = w0 * sx;
             array[offset + stride + 1] = h1 * sy;
 
-<<<<<<< HEAD
-            array[offset + stride * 2] = w0 * sx;
-            array[offset + stride * 2 + 1] = h0 * sy;
-
-            array[offset + stride * 3] = w1 * sx;
-            array[offset + stride * 3 + 1] = h0 * sy;
-
-            offset += stride * 4;
-        }
-
-    }
-
-    /**
-     *
-     * @param children {PIXI.DisplayObject[]} the array of display objects to render
-     * @param startIndex {number} the index to start from in the children array
-     * @param amount {number} the amount of children that will have their positions uploaded
-     * @param array {number[]}
-     * @param stride {number}
-     * @param offset {number}
-     */
-    uploadPosition(children,startIndex, amount, array, stride, offset)
-    {
-        for (var i = 0; i < amount; i++)
-        {
-            var spritePosition = children[startIndex + i].position;
-
-            array[offset] = spritePosition.x;
-            array[offset + 1] = spritePosition.y;
-
-            array[offset + stride] = spritePosition.x;
-            array[offset + stride + 1] = spritePosition.y;
-
-            array[offset + stride * 2] = spritePosition.x;
-            array[offset + stride * 2 + 1] = spritePosition.y;
-
-            array[offset + stride * 3] = spritePosition.x;
-            array[offset + stride * 3 + 1] = spritePosition.y;
-
-            offset += stride * 4;
-        }
-
-=======
             array[offset + (stride * 2)] = w0 * sx;
             array[offset + (stride * 2) + 1] = h0 * sy;
 
@@ -573,31 +303,10 @@ export default class ParticleRenderer extends core.ObjectRenderer
 
             offset += stride * 4;
         }
->>>>>>> upstream/dev
     }
 
     /**
      *
-<<<<<<< HEAD
-     * @param children {PIXI.DisplayObject[]} the array of display objects to render
-     * @param startIndex {number} the index to start from in the children array
-     * @param amount {number} the amount of children that will have their rotation uploaded
-     * @param array {number[]}
-     * @param stride {number}
-     * @param offset {number}
-     */
-    uploadRotation(children,startIndex, amount, array, stride, offset)
-    {
-        for (var i = 0; i < amount; i++)
-        {
-            var spriteRotation = children[startIndex + i].rotation;
-
-
-            array[offset] = spriteRotation;
-            array[offset + stride] = spriteRotation;
-            array[offset + stride * 2] = spriteRotation;
-            array[offset + stride * 3] = spriteRotation;
-=======
      * @param {PIXI.DisplayObject[]} children - the array of display objects to render
      * @param {number} startIndex - the index to start from in the children array
      * @param {number} amount - the amount of children that will have their rotation uploaded
@@ -615,7 +324,6 @@ export default class ParticleRenderer extends core.ObjectRenderer
             array[offset + stride] = spriteRotation;
             array[offset + (stride * 2)] = spriteRotation;
             array[offset + (stride * 3)] = spriteRotation;
->>>>>>> upstream/dev
 
             offset += stride * 4;
         }
@@ -623,20 +331,6 @@ export default class ParticleRenderer extends core.ObjectRenderer
 
     /**
      *
-<<<<<<< HEAD
-     * @param children {PIXI.DisplayObject[]} the array of display objects to render
-     * @param startIndex {number} the index to start from in the children array
-     * @param amount {number} the amount of children that will have their Uvs uploaded
-     * @param array {number[]}
-     * @param stride {number}
-     * @param offset {number}
-     */
-    uploadUvs(children,startIndex, amount, array, stride, offset)
-    {
-        for (var i = 0; i < amount; i++)
-        {
-            var textureUvs = children[startIndex + i]._texture._uvs;
-=======
      * @param {PIXI.DisplayObject[]} children - the array of display objects to render
      * @param {number} startIndex - the index to start from in the children array
      * @param {number} amount - the amount of children that will have their rotation uploaded
@@ -649,7 +343,6 @@ export default class ParticleRenderer extends core.ObjectRenderer
         for (let i = 0; i < amount; ++i)
         {
             const textureUvs = children[startIndex + i]._texture._uvs;
->>>>>>> upstream/dev
 
             if (textureUvs)
             {
@@ -659,48 +352,28 @@ export default class ParticleRenderer extends core.ObjectRenderer
                 array[offset + stride] = textureUvs.x1;
                 array[offset + stride + 1] = textureUvs.y1;
 
-<<<<<<< HEAD
-                array[offset + stride * 2] = textureUvs.x2;
-                array[offset + stride * 2 + 1] = textureUvs.y2;
-
-                array[offset + stride * 3] = textureUvs.x3;
-                array[offset + stride * 3 + 1] = textureUvs.y3;
-=======
                 array[offset + (stride * 2)] = textureUvs.x2;
                 array[offset + (stride * 2) + 1] = textureUvs.y2;
 
                 array[offset + (stride * 3)] = textureUvs.x3;
                 array[offset + (stride * 3) + 1] = textureUvs.y3;
->>>>>>> upstream/dev
 
                 offset += stride * 4;
             }
             else
             {
-<<<<<<< HEAD
-                //TODO you know this can be easier!
-=======
                 // TODO you know this can be easier!
->>>>>>> upstream/dev
                 array[offset] = 0;
                 array[offset + 1] = 0;
 
                 array[offset + stride] = 0;
                 array[offset + stride + 1] = 0;
 
-<<<<<<< HEAD
-                array[offset + stride * 2] = 0;
-                array[offset + stride * 2 + 1] = 0;
-
-                array[offset + stride * 3] = 0;
-                array[offset + stride * 3 + 1] = 0;
-=======
                 array[offset + (stride * 2)] = 0;
                 array[offset + (stride * 2) + 1] = 0;
 
                 array[offset + (stride * 3)] = 0;
                 array[offset + (stride * 3) + 1] = 0;
->>>>>>> upstream/dev
 
                 offset += stride * 4;
             }
@@ -709,25 +382,6 @@ export default class ParticleRenderer extends core.ObjectRenderer
 
     /**
      *
-<<<<<<< HEAD
-     * @param children {PIXI.DisplayObject[]} the array of display objects to render
-     * @param startIndex {number} the index to start from in the children array
-     * @param amount {number} the amount of children that will have their alpha uploaded
-     * @param array {number[]}
-     * @param stride {number}
-     * @param offset {number}
-     */
-    uploadAlpha(children,startIndex, amount, array, stride, offset)
-    {
-         for (var i = 0; i < amount; i++)
-         {
-            var spriteAlpha = children[startIndex + i].alpha;
-
-            array[offset] = spriteAlpha;
-            array[offset + stride] = spriteAlpha;
-            array[offset + stride * 2] = spriteAlpha;
-            array[offset + stride * 3] = spriteAlpha;
-=======
      * @param {PIXI.DisplayObject[]} children - the array of display objects to render
      * @param {number} startIndex - the index to start from in the children array
      * @param {number} amount - the amount of children that will have their rotation uploaded
@@ -745,26 +399,11 @@ export default class ParticleRenderer extends core.ObjectRenderer
             array[offset + stride] = spriteAlpha;
             array[offset + (stride * 2)] = spriteAlpha;
             array[offset + (stride * 3)] = spriteAlpha;
->>>>>>> upstream/dev
 
             offset += stride * 4;
         }
     }
 
-<<<<<<< HEAD
-
-    /**
-     * Destroys the ParticleRenderer.
-     *
-     */
-    destroy()
-    {
-        if (this.renderer.gl) {
-            this.renderer.gl.deleteBuffer(this.indexBuffer);
-        }
-        core.ObjectRenderer.prototype.destroy.apply(this, arguments);
-
-=======
     /**
      * Destroys the ParticleRenderer.
      *
@@ -778,7 +417,6 @@ export default class ParticleRenderer extends core.ObjectRenderer
 
         super.destroy();
 
->>>>>>> upstream/dev
         this.shader.destroy();
 
         this.indices = null;
@@ -786,10 +424,5 @@ export default class ParticleRenderer extends core.ObjectRenderer
     }
 
 }
-<<<<<<< HEAD
-
-module.exports = ParticleRenderer;
-=======
->>>>>>> upstream/dev
 
 core.WebGLRenderer.registerPlugin('particle', ParticleRenderer);

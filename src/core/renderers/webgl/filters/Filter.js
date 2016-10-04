@@ -10,80 +10,6 @@ const SOURCE_KEY_MAP = {};
  * @memberof PIXI
  * @extends PIXI.Shader
  */
-<<<<<<< HEAD
-class Filter {
-    constructor(vertexSrc, fragmentSrc, uniforms)
-    {
-
-        /**
-         * The vertex shader.
-         *
-         * @member {string}
-         */
-        this.vertexSrc = vertexSrc || Filter.defaultVertexSrc;
-
-        /**
-         * The fragment shader.
-         *
-         * @member {string}
-         */
-        this.fragmentSrc = fragmentSrc || Filter.defaultFragmentSrc;
-
-        this.blendMode = CONST.BLEND_MODES.NORMAL;
-
-        // pull out the vertex and shader uniforms if they are not specified..
-        // currently this does not extract structs only default types
-        this.uniformData = uniforms || extractUniformsFromSrc( this.vertexSrc, this.fragmentSrc, 'projectionMatrix|uSampler');
-
-        this.uniforms = {};
-
-        for (var i in this.uniformData)
-        {
-            this.uniforms[i] = this.uniformData[i].value;
-        }
-
-        // this is where we store shader references..
-        // TODO we could cache this!
-        this.glShaders = [];
-
-        // used for cacheing.. sure there is a better way!
-        if(!SOURCE_KEY_MAP[this.vertexSrc + this.fragmentSrc])
-        {
-            SOURCE_KEY_MAP[this.vertexSrc + this.fragmentSrc] = utils.uid();
-        }
-
-        this.glShaderKey = SOURCE_KEY_MAP[this.vertexSrc + this.fragmentSrc];
-
-        /**
-         * The padding of the filter. Some filters require extra space to breath such as a blur. Increasing this will add extra width and height to the bounds of the object that the filter is applied to.
-         */
-        this.padding = 4;
-
-        /**
-         * The resolution of the filter. Setting this to be lower will lower the quality but increase the performance of the filter.
-         * @member {number}
-         */
-        this.resolution = 1;
-
-        /**
-         * If enabled is true the filter is applied, if false it will not.
-         * @member {boolean}
-         */
-        this.enabled = true;
-    }
-
-    // var tempMatrix = new math.Matrix();
-
-    apply(filterManager, input, output, clear)
-    {
-        // --- //
-      //  this.uniforms.filterMatrix = filterManager.calculateSpriteMatrix(tempMatrix, window.panda );
-
-        // do as you please!
-
-        filterManager.applyFilter(this, input, output, clear);
-
-=======
 class Filter
 {
     /**
@@ -174,7 +100,6 @@ class Filter
 
         filterManager.applyFilter(this, input, output, clear);
 
->>>>>>> upstream/dev
         // or just do a regular render..
     }
 
@@ -184,12 +109,8 @@ class Filter
      * @static
      * @constant
      */
-<<<<<<< HEAD
-    static get defaultVertexSrc() { 
-=======
     static get defaultVertexSrc()
     {
->>>>>>> upstream/dev
         return [
             'attribute vec2 aVertexPosition;',
             'attribute vec2 aTextureCoord;',
@@ -204,11 +125,7 @@ class Filter
             '   gl_Position = vec4((projectionMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);',
             '   vFilterCoord = ( filterMatrix * vec3( aTextureCoord, 1.0)  ).xy;',
             '   vTextureCoord = aTextureCoord ;',
-<<<<<<< HEAD
-            '}'
-=======
             '}',
->>>>>>> upstream/dev
         ].join('\n');
     }
 
@@ -218,12 +135,8 @@ class Filter
      * @static
      * @constant
      */
-<<<<<<< HEAD
-    static get defaultFragmentSrc() {
-=======
     static get defaultFragmentSrc()
     {
->>>>>>> upstream/dev
         return [
             'varying vec2 vTextureCoord;',
             'varying vec2 vFilterCoord;',
@@ -243,18 +156,6 @@ class Filter
             '   {',
             '     color = vec4(0.0, 1.0, 0.0, 1.0);',
             '   }',
-<<<<<<< HEAD
-           // '   gl_FragColor = vec4(mod(vFilterCoord.x, 1.5), vFilterCoord.y,0.0,1.0);',
-            '   gl_FragColor = mix(sample, masky, 0.5);',
-            '   gl_FragColor *= sample.a;',
-            '}'
-        ].join('\n');
-    }
-    
-}
-
-module.exports = Filter;
-=======
             // '   gl_FragColor = vec4(mod(vFilterCoord.x, 1.5), vFilterCoord.y,0.0,1.0);',
             '   gl_FragColor = mix(sample, masky, 0.5);',
             '   gl_FragColor *= sample.a;',
@@ -264,4 +165,3 @@ module.exports = Filter;
 }
 
 export default Filter;
->>>>>>> upstream/dev

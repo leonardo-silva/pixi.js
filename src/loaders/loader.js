@@ -25,34 +25,21 @@ import bitmapFontParser from './bitmapFontParser';
  * @extends module:resource-loader.ResourceLoader
  * @memberof PIXI.loaders
  */
-<<<<<<< HEAD
-class Loader extends ResourceLoader {
-=======
 export default class Loader extends ResourceLoader
 {
     /**
      * @param {string} [baseUrl=''] - The base url for all resources loaded by this loader.
      * @param {number} [concurrency=10] - The number of resources to load concurrently.
      */
->>>>>>> upstream/dev
     constructor(baseUrl, concurrency)
     {
         super(baseUrl, concurrency);
 
-<<<<<<< HEAD
-        for (var i = 0; i < Loader._pixiMiddleware.length; ++i) {
-            this.use(Loader._pixiMiddleware[i]());
-        }
-    }
-
-}
-=======
         for (let i = 0; i < Loader._pixiMiddleware.length; ++i)
         {
             this.use(Loader._pixiMiddleware[i]());
         }
     }
->>>>>>> upstream/dev
 
     /**
      * Adds a default middleware to the pixi loader.

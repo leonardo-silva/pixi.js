@@ -8,15 +8,11 @@ const TEMP_RECT = new core.Rectangle();
  * @class
  * @memberof PIXI
  */
-<<<<<<< HEAD
-class CanvasExtract {
-=======
 export default class CanvasExtract
 {
     /**
      * @param {PIXI.CanvasRenderer} renderer - A reference to the current renderer
      */
->>>>>>> upstream/dev
     constructor(renderer)
     {
         this.renderer = renderer;
@@ -26,58 +22,6 @@ export default class CanvasExtract
     /**
      * Will return a HTML Image of the target
      *
-<<<<<<< HEAD
-     * @param target {PIXI.DisplayObject|PIXI.RenderTexture} A displayObject or renderTexture to convert. If left empty will use use the main renderer
-     * @return {HTMLImageElement} HTML Image of the target
-     */
-    image( target )
-    {
-	    var image = new Image();
-        image.src = this.base64( target );
-        return image;
-    }
-
-    /**
-     * Will return a a base64 encoded string of this target. It works by calling CanvasExtract.getCanvas and then running toDataURL on that.
-     * @param target {PIXI.DisplayObject|PIXI.RenderTexture} A displayObject or renderTexture to convert. If left empty will use use the main renderer
-     * @return {string} A base64 encoded string of the texture.
-     */
-    base64( target )
-    {
-        return this.canvas( target ).toDataURL();
-    }
-
-    /**
-     * Creates a Canvas element, renders this target to it and then returns it.
-     * @param target {PIXI.DisplayObject|PIXI.RenderTexture} A displayObject or renderTexture to convert. If left empty will use use the main renderer
-     * @return {HTMLCanvasElement} A Canvas element with the texture rendered on.
-     */
-    canvas( target )
-    {
-	    var renderer = this.renderer;
-	    var context;
-	    var resolution;
-        var frame;
-        var renderTexture;
-
-        if(target)
-        {
-            if(target instanceof core.RenderTexture)
-            {
-                renderTexture = target;
-            }
-            else
-            {
-                renderTexture = renderer.generateTexture(target);
-            }
-        }
-
-	    if(renderTexture)
-        {
-            context = renderTexture.baseTexture._canvasRenderTarget.context;
-            resolution = renderTexture.baseTexture._canvasRenderTarget.resolution;
-            frame = renderTexture.frame;
-=======
      * @param {PIXI.DisplayObject|PIXI.RenderTexture} target - A displayObject or renderTexture
      *  to convert. If left empty will use use the main renderer
      * @return {HTMLImageElement} HTML Image of the target
@@ -129,59 +73,10 @@ export default class CanvasExtract
             {
                 renderTexture = renderer.generateTexture(target);
             }
->>>>>>> upstream/dev
         }
 
         if (renderTexture)
         {
-<<<<<<< HEAD
-            context = renderer.rootContext;
-            resolution = renderer.rootResolution;
-
-            frame = tempRect;
-            frame.width = this.renderer.width;
-            frame.height = this.renderer.height;
-        }
-
-        var width = frame.width * resolution;
-        var height = frame.height * resolution;
-
-       	var canvasBuffer = new core.CanvasRenderTarget(width, height);
-        var canvasData = context.getImageData(frame.x * resolution, frame.y * resolution, width, height);
-        canvasBuffer.context.putImageData(canvasData, 0, 0);
-
-
-        // send the canvas back..
-        return canvasBuffer.canvas;
-    }
-
-    /**
-     * Will return a one-dimensional array containing the pixel data of the entire texture in RGBA order, with integer values between 0 and 255 (included).
-     * @param target {PIXI.DisplayObject|PIXI.RenderTexture} A displayObject or renderTexture to convert. If left empty will use use the main renderer
-     * @return {Uint8ClampedArray} One-dimensional array containing the pixel data of the entire texture
-     */
-    pixels( target )
-    {
-        var renderer = this.renderer;
-        var context;
-        var resolution;
-        var frame;
-        var renderTexture;
-
-        if(target)
-        {
-            if(target instanceof core.RenderTexture)
-            {
-                renderTexture = target;
-            }
-            else
-            {
-                renderTexture = renderer.generateTexture(target);
-            }
-        }
-
-        if(renderTexture)
-=======
             context = renderTexture.baseTexture._canvasRenderTarget.context;
             resolution = renderTexture.baseTexture._canvasRenderTarget.resolution;
             frame = renderTexture.frame;
@@ -236,7 +131,6 @@ export default class CanvasExtract
         }
 
         if (renderTexture)
->>>>>>> upstream/dev
         {
             context = renderTexture.baseTexture._canvasRenderTarget.context;
             resolution = renderTexture.baseTexture._canvasRenderTarget.resolution;
@@ -245,14 +139,8 @@ export default class CanvasExtract
         else
         {
             context = renderer.rootContext;
-<<<<<<< HEAD
-            resolution = renderer.rootResolution;
-
-            frame = tempRect;
-=======
 
             frame = TEMP_RECT;
->>>>>>> upstream/dev
             frame.width = renderer.width;
             frame.height = renderer.height;
         }
@@ -269,13 +157,6 @@ export default class CanvasExtract
         this.renderer.extract = null;
         this.renderer = null;
     }
-<<<<<<< HEAD
-
 }
-
-module.exports = CanvasExtract;
-=======
-}
->>>>>>> upstream/dev
 
 core.CanvasRenderer.registerPlugin('extract', CanvasExtract);

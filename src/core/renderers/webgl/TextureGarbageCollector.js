@@ -6,18 +6,12 @@ import { GC_MODES } from '../../const';
  *
  * @class
  * @memberof PIXI
-<<<<<<< HEAD
- * @param renderer {PIXI.WebGLRenderer} The renderer this manager works for.
- */
-class TextureGarbageCollector {
-=======
  */
 export default class TextureGarbageCollector
 {
     /**
      * @param {PIXI.WebGLRenderer} renderer - The renderer this manager works for.
      */
->>>>>>> upstream/dev
     constructor(renderer)
     {
         this.renderer = renderer;
@@ -27,11 +21,7 @@ export default class TextureGarbageCollector
         this.maxIdle = 60 * 60;
         this.checkCountMax = 60 * 10;
 
-<<<<<<< HEAD
-        this.mode = CONST.GC_MODES.DEFAULT;
-=======
         this.mode = GC_MODES.DEFAULT;
->>>>>>> upstream/dev
     }
 
     /**
@@ -42,23 +32,14 @@ export default class TextureGarbageCollector
     {
         this.count++;
 
-<<<<<<< HEAD
-        if(this.mode === CONST.GC_MODES.MANUAL)
-=======
         if (this.mode === GC_MODES.MANUAL)
->>>>>>> upstream/dev
         {
             return;
         }
 
         this.checkCount++;
 
-<<<<<<< HEAD
-
-        if(this.checkCount > this.checkCountMax)
-=======
         if (this.checkCount > this.checkCountMax)
->>>>>>> upstream/dev
         {
             this.checkCount = 0;
 
@@ -72,24 +53,13 @@ export default class TextureGarbageCollector
      */
     run()
     {
-<<<<<<< HEAD
-        var tm = this.renderer.textureManager;
-        var managedTextures =  tm._managedTextures;
-        var wasRemoved = false;
-        var i,j;
-=======
         const tm = this.renderer.textureManager;
         const managedTextures =  tm._managedTextures;
         let wasRemoved = false;
->>>>>>> upstream/dev
 
         for (let i = 0; i < managedTextures.length; i++)
         {
-<<<<<<< HEAD
-            var texture = managedTextures[i];
-=======
             const texture = managedTextures[i];
->>>>>>> upstream/dev
 
             // only supports non generated textures at the moment!
             if (!texture._glRenderTargets && this.count - texture.touched > this.maxIdle)
@@ -102,15 +72,9 @@ export default class TextureGarbageCollector
 
         if (wasRemoved)
         {
-<<<<<<< HEAD
-            j = 0;
-
-            for (i = 0; i < managedTextures.length; i++)
-=======
             let j = 0;
 
             for (let i = 0; i < managedTextures.length; i++)
->>>>>>> upstream/dev
             {
                 if (managedTextures[i] !== null)
                 {
@@ -125,29 +89,6 @@ export default class TextureGarbageCollector
     /**
      * Removes all the textures within the specified displayObject and its children from the GPU
      *
-<<<<<<< HEAD
-     * @param displayObject {PIXI.DisplayObject} the displayObject to remove the textures from.
-     */
-    unload( displayObject )
-    {
-        var tm = this.renderer.textureManager;
-
-        if(displayObject._texture)
-        {
-            tm.destroyTexture(displayObject._texture, true);
-        }
-
-        for (var i = displayObject.children.length - 1; i >= 0; i--) {
-
-            this.unload(displayObject.children[i]);
-
-        }
-    }
-
-}
-
-module.exports = TextureGarbageCollector;
-=======
      * @param {PIXI.DisplayObject} displayObject - the displayObject to remove the textures from.
      */
     unload(displayObject)
@@ -165,4 +106,3 @@ module.exports = TextureGarbageCollector;
         }
     }
 }
->>>>>>> upstream/dev

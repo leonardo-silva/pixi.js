@@ -6,67 +6,6 @@ import { RESOLUTION } from '../../../const';
  * @class
  * @memberof PIXI
  */
-<<<<<<< HEAD
-class CanvasRenderTarget {
-    constructor(width, height, resolution)
-    {
-        /**
-         * The Canvas object that belongs to this CanvasRenderTarget.
-         *
-         * @member {HTMLCanvasElement}
-         */
-        this.canvas = document.createElement('canvas');
-
-        /**
-         * A CanvasRenderingContext2D object representing a two-dimensional rendering context.
-         *
-         * @member {CanvasRenderingContext2D}
-         */
-        this.context = this.canvas.getContext('2d');
-
-        this.resolution = resolution || CONST.RESOLUTION;
-
-        this.resize(width, height);
-    }
-
-    /**
-     * Clears the canvas that was created by the CanvasRenderTarget class.
-     *
-     * @private
-     */
-    clear()
-    {
-        this.context.setTransform(1, 0, 0, 1, 0, 0);
-        this.context.clearRect(0,0, this.canvas.width, this.canvas.height);
-    }
-
-    /**
-     * Resizes the canvas to the specified width and height.
-     *
-     * @param width {number} the new width of the canvas
-     * @param height {number} the new height of the canvas
-     */
-    resize(width, height)
-    {
-
-        this.canvas.width = width * this.resolution;
-        this.canvas.height = height * this.resolution;
-    }
-
-    /**
-     * Destroys this canvas.
-     *
-     */
-    destroy()
-    {
-        this.context = null;
-        this.canvas = null;
-    }
-
-}
-
-module.exports = CanvasRenderTarget;
-=======
 export default class CanvasRenderTarget
 {
     /**
@@ -127,7 +66,6 @@ export default class CanvasRenderTarget
         this.context = null;
         this.canvas = null;
     }
->>>>>>> upstream/dev
 
     /**
      * The width of the canvas buffer in pixels.
@@ -160,9 +98,6 @@ export default class CanvasRenderTarget
     {
         return this.canvas.height;
     }
-<<<<<<< HEAD
-});
-=======
 
     /**
      * Sets the height.
@@ -174,4 +109,3 @@ export default class CanvasRenderTarget
         this.canvas.height = val;
     }
 }
->>>>>>> upstream/dev

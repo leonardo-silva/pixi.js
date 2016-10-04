@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-var EventEmitter = require('eventemitter3'),
-    CONST = require('../const'),
-    TransformStatic = require('./TransformStatic'),
-    Transform = require('./Transform'),
-    Bounds = require('./Bounds'),
-    math = require('../math');//,
-    //_tempDisplayObjectParent = new DisplayObject();
-=======
 import EventEmitter from 'eventemitter3';
 import { TRANSFORM_MODE } from '../const';
 import TransformStatic from './TransformStatic';
@@ -14,7 +5,6 @@ import Transform from './Transform';
 import Bounds from './Bounds';
 import { Rectangle } from '../math';
 // _tempDisplayObjectParent = new DisplayObject();
->>>>>>> upstream/dev
 
 /**
  * The base class for all objects that are rendered on the screen.
@@ -25,33 +15,15 @@ import { Rectangle } from '../math';
  * @mixes PIXI.interaction.interactiveTarget
  * @memberof PIXI
  */
-<<<<<<< HEAD
-class DisplayObject extends EventEmitter {
-=======
 export default class DisplayObject extends EventEmitter
 {
     /**
      *
      */
->>>>>>> upstream/dev
     constructor()
     {
         super();
 
-<<<<<<< HEAD
-        var TransformClass = CONST.TRANSFORM_MODE.DEFAULT === CONST.TRANSFORM_MODE.STATIC ? TransformStatic : Transform;
-
-        this.tempDisplayObjectParent = null;
-        
-        //TODO: need to create Transform from factory
-        /**
-         * World transform and local transform of this object.
-         * This will be reworked in v4.1, please do not use it yet unless you know what are you doing!
-         *
-         * @member {PIXI.TransformBase}
-         */
-        this.transform =  new TransformClass();
-=======
         const TransformClass = TRANSFORM_MODE.DEFAULT === TRANSFORM_MODE.STATIC ? TransformStatic : Transform;
 
         this.tempDisplayObjectParent = null;
@@ -64,7 +36,6 @@ export default class DisplayObject extends EventEmitter
          * @member {PIXI.TransformBase}
          */
         this.transform = new TransformClass();
->>>>>>> upstream/dev
 
         /**
          * The opacity of the object.
@@ -77,11 +48,8 @@ export default class DisplayObject extends EventEmitter
          * The visibility of the object. If false the object will not be drawn, and
          * the updateTransform function will not be called.
          *
-<<<<<<< HEAD
-=======
          * Only affects recursive calls from parent. You can ask for bounds or call updateTransform manually
          *
->>>>>>> upstream/dev
          * @member {boolean}
          */
         this.visible = true;
@@ -90,11 +58,8 @@ export default class DisplayObject extends EventEmitter
          * Can this object be rendered, if false the object will not be drawn but the updateTransform
          * methods will still be called.
          *
-<<<<<<< HEAD
-=======
          * Only affects recursive calls from parent. You can ask for bounds manually
          *
->>>>>>> upstream/dev
          * @member {boolean}
          */
         this.renderable = true;
@@ -147,96 +112,6 @@ export default class DisplayObject extends EventEmitter
          * @private
          */
         this._mask = null;
-<<<<<<< HEAD
-
-    }
-
-    get _tempDisplayObjectParent() {
-        if (this.tempDisplayObjectParent === null) {
-            this.tempDisplayObjectParent = new DisplayObject();
-        }    
-        return this.tempDisplayObjectParent;        
-    }
-
-    /*
-     * Updates the object transform for rendering
-     *
-     * TODO - Optimization pass!
-     */
-    updateTransform()
-    {
-        this.transform.updateTransform(this.parent.transform);
-        // multiply the alphas..
-        this.worldAlpha = this.alpha * this.parent.worldAlpha;
-
-        this._bounds.updateID++;
-    }
-
-    /**
-     * recursively updates transform of all objects from the root to this one
-     * internal function for toLocal()
-     */
-    _recursivePostUpdateTransform()
-    {
-        if (this.parent)
-        {
-            this.parent._recursivePostUpdateTransform();
-            this.transform.updateTransform(this.parent.transform);
-        }
-        else
-        {
-            this.transform.updateTransform(this._tempDisplayObjectParent.transform);
-        }
-    }
-
-    /**
-     *
-     *
-     * Retrieves the bounds of the displayObject as a rectangle object.
-     * @param skipUpdate {boolean} setting to true will stop the transforms of the scene graph from being updated. This means the calculation returned MAY be out of date BUT will give you a nice performance boost
-     * @param rect {PIXI.Rectangle} Optional rectangle to store the result of the bounds calculation
-     * @return {PIXI.Rectangle} the rectangular bounding area
-     */
-    getBounds(skipUpdate, rect)
-    {
-        if(!skipUpdate)
-        {
-            if(!this.parent)
-            {
-                this.parent = this._tempDisplayObjectParent;
-                this.parent.transform._worldID++;
-                this.updateTransform();
-                this.parent = null;
-            }
-            else
-            {
-                this._recursivePostUpdateTransform();
-                this.updateTransform();
-            }
-        }
-
-        if(this._boundsID !== this._lastBoundsID)
-        {
-            this.calculateBounds();
-        }
-
-        if(!rect)
-        {
-            if(!this._boundsRect)
-            {
-                this._boundsRect = new math.Rectangle();
-            }
-
-            rect = this._boundsRect;
-        }
-
-        return this._bounds.getRectangle(rect);
-    }
-
-    /**
-     * Retrieves the local bounds of the displayObject as a rectangle object
-     * @param rect {PIXI.Rectangle} Optional rectangle to store the result of the bounds calculation
-=======
     }
 
     /**
@@ -332,45 +207,27 @@ export default class DisplayObject extends EventEmitter
      * Retrieves the local bounds of the displayObject as a rectangle object
      *
      * @param {PIXI.Rectangle} [rect] - Optional rectangle to store the result of the bounds calculation
->>>>>>> upstream/dev
      * @return {PIXI.Rectangle} the rectangular bounding area
      */
     getLocalBounds(rect)
     {
-<<<<<<< HEAD
-        var transformRef = this.transform;
-        var parentRef = this.parent;
-=======
         const transformRef = this.transform;
         const parentRef = this.parent;
->>>>>>> upstream/dev
 
         this.parent = null;
         this.transform = this._tempDisplayObjectParent.transform;
 
-<<<<<<< HEAD
-        if(!rect)
-        {
-            if(!this._localBoundsRect)
-            {
-                this._localBoundsRect = new math.Rectangle();
-=======
         if (!rect)
         {
             if (!this._localBoundsRect)
             {
                 this._localBoundsRect = new Rectangle();
->>>>>>> upstream/dev
             }
 
             rect = this._localBoundsRect;
         }
 
-<<<<<<< HEAD
-        var bounds = this.getBounds(false, rect);
-=======
         const bounds = this.getBounds(false, rect);
->>>>>>> upstream/dev
 
         this.parent = parentRef;
         this.transform = transformRef;
@@ -381,14 +238,6 @@ export default class DisplayObject extends EventEmitter
     /**
      * Calculates the global position of the display object
      *
-<<<<<<< HEAD
-     * @param position {PIXI.Point} The world origin to calculate from
-     * @return {PIXI.Point} A point object representing the position of this object
-     */
-    toGlobal(position, point, skipUpdate)
-    {
-        if(!skipUpdate)
-=======
      * @param {PIXI.Point} position - The world origin to calculate from
      * @param {PIXI.Point} [point] - A Point object in which to store the value, optional
      *  (otherwise will create a new Point)
@@ -398,18 +247,13 @@ export default class DisplayObject extends EventEmitter
     toGlobal(position, point, skipUpdate = false)
     {
         if (!skipUpdate)
->>>>>>> upstream/dev
         {
             this._recursivePostUpdateTransform();
 
             // this parent check is for just in case the item is a root object.
             // If it is we need to give it a temporary parent so that displayObjectUpdateTransform works correctly
             // this is mainly to avoid a parent check in the main loop. Every little helps for performance :)
-<<<<<<< HEAD
-            if(!this.parent)
-=======
             if (!this.parent)
->>>>>>> upstream/dev
             {
                 this.parent = this._tempDisplayObjectParent;
                 this.displayObjectUpdateTransform();
@@ -428,17 +272,11 @@ export default class DisplayObject extends EventEmitter
     /**
      * Calculates the local position of the display object relative to another point
      *
-<<<<<<< HEAD
-     * @param position {PIXI.Point} The world origin to calculate from
-     * @param [from] {PIXI.DisplayObject} The DisplayObject to calculate the global position from
-     * @param [point] {PIXI.Point} A Point object in which to store the value, optional (otherwise will create a new Point)
-=======
      * @param {PIXI.Point} position - The world origin to calculate from
      * @param {PIXI.DisplayObject} [from] - The DisplayObject to calculate the global position from
      * @param {PIXI.Point} [point] - A Point object in which to store the value, optional
      *  (otherwise will create a new Point)
      * @param {boolean} [skipUpdate=false] - Should we skip the update transform
->>>>>>> upstream/dev
      * @return {PIXI.Point} A point object representing the position of this object
      */
     toLocal(position, from, point, skipUpdate)
@@ -448,22 +286,14 @@ export default class DisplayObject extends EventEmitter
             position = from.toGlobal(position, point, skipUpdate);
         }
 
-<<<<<<< HEAD
-        if(! skipUpdate)
-=======
         if (!skipUpdate)
->>>>>>> upstream/dev
         {
             this._recursivePostUpdateTransform();
 
             // this parent check is for just in case the item is a root object.
             // If it is we need to give it a temporary parent so that displayObjectUpdateTransform works correctly
             // this is mainly to avoid a parent check in the main loop. Every little helps for performance :)
-<<<<<<< HEAD
-            if(!this.parent)
-=======
             if (!this.parent)
->>>>>>> upstream/dev
             {
                 this.parent = this._tempDisplayObjectParent;
                 this.displayObjectUpdateTransform();
@@ -482,15 +312,9 @@ export default class DisplayObject extends EventEmitter
     /**
      * Renders the object using the WebGL renderer
      *
-<<<<<<< HEAD
-     * @param renderer {PIXI.WebGLRenderer} The renderer
-     */
-    renderWebGL(renderer) // jshint unused:false
-=======
      * @param {PIXI.WebGLRenderer} renderer - The renderer
      */
     renderWebGL(renderer) // eslint-disable-line no-unused-vars
->>>>>>> upstream/dev
     {
         // OVERWRITE;
     }
@@ -498,15 +322,9 @@ export default class DisplayObject extends EventEmitter
     /**
      * Renders the object using the Canvas renderer
      *
-<<<<<<< HEAD
-     * @param renderer {PIXI.CanvasRenderer} The renderer
-     */
-    renderCanvas(renderer) // jshint unused:false
-=======
      * @param {PIXI.CanvasRenderer} renderer - The renderer
      */
     renderCanvas(renderer) // eslint-disable-line no-unused-vars
->>>>>>> upstream/dev
     {
         // OVERWRITE;
     }
@@ -514,11 +332,7 @@ export default class DisplayObject extends EventEmitter
     /**
      * Set the parent Container of this DisplayObject
      *
-<<<<<<< HEAD
-     * @param container {PIXI.Container} The Container to add this DisplayObject to
-=======
      * @param {PIXI.Container} container - The Container to add this DisplayObject to
->>>>>>> upstream/dev
      * @return {PIXI.Container} The Container that this DisplayObject was added to
      */
     setParent(container)
@@ -529,40 +343,13 @@ export default class DisplayObject extends EventEmitter
         }
 
         container.addChild(this);
-<<<<<<< HEAD
-=======
 
->>>>>>> upstream/dev
         return container;
     }
 
     /**
      * Convenience function to set the postion, scale, skew and pivot at once.
      *
-<<<<<<< HEAD
-     * @param [x=0] {number} The X position
-     * @param [y=0] {number} The Y position
-     * @param [scaleX=1] {number} The X scale value
-     * @param [scaleY=1] {number} The Y scale value
-     * @param [rotation=0] {number} The rotation
-     * @param [skewX=0] {number} The X skew value
-     * @param [skewY=0] {number} The Y skew value
-     * @param [pivotX=0] {number} The X pivot value
-     * @param [pivotY=0] {number} The Y pivot value
-     * @return {PIXI.DisplayObject} The DisplayObject instance
-     */
-    setTransform(x, y, scaleX, scaleY, rotation, skewX, skewY, pivotX, pivotY) //jshint ignore:line
-    {
-        this.position.x = x || 0;
-        this.position.y = y || 0;
-        this.scale.x = !scaleX ? 1 : scaleX;
-        this.scale.y = !scaleY ? 1 : scaleY;
-        this.rotation = rotation || 0;
-        this.skew.x = skewX || 0;
-        this.skew.y = skewY || 0;
-        this.pivot.x = pivotX || 0;
-        this.pivot.y = pivotY || 0;
-=======
      * @param {number} [x=0] - The X position
      * @param {number} [y=0] - The Y position
      * @param {number} [scaleX=1] - The X scale value
@@ -586,21 +373,15 @@ export default class DisplayObject extends EventEmitter
         this.pivot.x = pivotX;
         this.pivot.y = pivotY;
 
->>>>>>> upstream/dev
         return this;
     }
 
     /**
      * Base destroy method for generic display objects. This will automatically
      * remove the display object from its parent Container as well as remove
-<<<<<<< HEAD
-     * all current event listeners and internal references. Do not use a DisplayObject 
-     * after calling `destroy`.
-=======
      * all current event listeners and internal references. Do not use a DisplayObject
      * after calling `destroy`.
      *
->>>>>>> upstream/dev
      */
     destroy()
     {
@@ -610,7 +391,6 @@ export default class DisplayObject extends EventEmitter
             this.parent.removeChild(this);
         }
         this.transform = null;
-<<<<<<< HEAD
 
         this.parent = null;
 
@@ -619,24 +399,6 @@ export default class DisplayObject extends EventEmitter
         this._mask = null;
 
         this.filterArea = null;
-
-        this.interactive = false;
-        this.interactiveChildren = false;
-    }
-=======
-
-        this.parent = null;
->>>>>>> upstream/dev
-
-        this._bounds = null;
-        this._currentBounds = null;
-        this._mask = null;
-
-<<<<<<< HEAD
-module.exports = DisplayObject;
-=======
-        this.filterArea = null;
->>>>>>> upstream/dev
 
         this.interactive = false;
         this.interactiveChildren = false;
@@ -864,20 +626,6 @@ module.exports = DisplayObject;
      *
      * @param {PIXI.Graphics|PIXI.Sprite} value - The value to set to.
      */
-<<<<<<< HEAD
-    filters: {
-        get: function ()
-        {
-            return this._filters && this._filters.slice();
-        },
-        set: function (value)
-        {
-            this._filters = value && value.slice();
-        }
-    }
-
-});
-=======
     set mask(value)
     {
         if (this._mask)
@@ -916,7 +664,6 @@ module.exports = DisplayObject;
         this._filters = value && value.slice();
     }
 }
->>>>>>> upstream/dev
 
 // performance increase to avoid using call.. (10x faster)
 DisplayObject.prototype.displayObjectUpdateTransform = DisplayObject.prototype.updateTransform;

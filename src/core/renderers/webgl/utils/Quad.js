@@ -7,16 +7,12 @@ import createIndicesForQuads from '../../../utils/createIndicesForQuads';
  * @class
  * @memberof PIXI
  */
-<<<<<<< HEAD
-class Quad {
-=======
 export default class Quad
 {
     /**
      * @param {WebGLRenderingContext} gl - The gl context for this quad to use.
      * @param {object} state - TODO: Description
      */
->>>>>>> upstream/dev
     constructor(gl, state)
     {
         /*
@@ -32,17 +28,10 @@ export default class Quad
          * @member {Float32Array}
          */
         this.vertices = new Float32Array([
-<<<<<<< HEAD
-            -1,-1,
-            1,-1,
-            1,1,
-            -1,1
-=======
             -1, -1,
             1, -1,
             1, 1,
             -1, 1,
->>>>>>> upstream/dev
         ]);
 
         /**
@@ -51,35 +40,20 @@ export default class Quad
          * @member {Float32Array}
          */
         this.uvs = new Float32Array([
-<<<<<<< HEAD
-            0,0,
-            1,0,
-            1,1,
-            0,1
-=======
             0, 0,
             1, 0,
             1, 1,
             0, 1,
->>>>>>> upstream/dev
         ]);
 
         this.interleaved = new Float32Array(8 * 2);
 
-<<<<<<< HEAD
-        for (var i = 0; i < 4; i++) {
-            this.interleaved[i*4] = this.vertices[(i*2)];
-            this.interleaved[(i*4)+1] = this.vertices[(i*2)+1];
-            this.interleaved[(i*4)+2] = this.uvs[i*2];
-            this.interleaved[(i*4)+3] = this.uvs[(i*2)+1];
-=======
         for (let i = 0; i < 4; i++)
         {
             this.interleaved[i * 4] = this.vertices[(i * 2)];
             this.interleaved[(i * 4) + 1] = this.vertices[(i * 2) + 1];
             this.interleaved[(i * 4) + 2] = this.uvs[i * 2];
             this.interleaved[(i * 4) + 3] = this.uvs[(i * 2) + 1];
->>>>>>> upstream/dev
         }
 
         /*
@@ -101,21 +75,12 @@ export default class Quad
          * @member {glCore.VertexArrayObject} The index buffer
          */
         this.vao = new glCore.VertexArrayObject(gl, state);
-<<<<<<< HEAD
-
-    }
-
-    /**
-     * Initialises the vaos and uses the shader
-     * @param shader {PIXI.Shader} the shader to use
-=======
     }
 
     /**
      * Initialises the vaos and uses the shader.
      *
      * @param {PIXI.Shader} shader - the shader to use
->>>>>>> upstream/dev
      */
     initVao(shader)
     {
@@ -126,56 +91,6 @@ export default class Quad
     }
 
     /**
-<<<<<<< HEAD
-     * Maps two Rectangle to the quad
-     * @param targetTextureFrame {PIXI.Rectangle} the first rectangle
-     * @param destinationFrame {PIXI.Rectangle} the second rectangle
-     */
-    map(targetTextureFrame, destinationFrame)
-    {
-        var x = 0; //destinationFrame.x / targetTextureFrame.width;
-        var y = 0; //destinationFrame.y / targetTextureFrame.height;
-
-        this.uvs[0] = x;
-        this.uvs[1] = y;
-
-        this.uvs[2] = x + destinationFrame.width / targetTextureFrame.width;
-        this.uvs[3] = y;
-
-        this.uvs[4] = x + destinationFrame.width / targetTextureFrame.width;
-        this.uvs[5] = y + destinationFrame.height / targetTextureFrame.height;
-
-        this.uvs[6] = x;
-        this.uvs[7] = y + destinationFrame.height / targetTextureFrame.height;
-
-        /// -----
-        x = destinationFrame.x;
-        y = destinationFrame.y;
-
-        this.vertices[0] = x;
-        this.vertices[1] = y;
-
-        this.vertices[2] = x + destinationFrame.width;
-        this.vertices[3] = y;
-
-        this.vertices[4] = x + destinationFrame.width;
-        this.vertices[5] = y + destinationFrame.height;
-
-        this.vertices[6] = x;
-        this.vertices[7] = y + destinationFrame.height;
-
-        return this;
-    }
-
-    /**
-     * Draws the quad
-     */
-    draw()
-    {
-        this.vao.bind()
-        .draw(this.gl.TRIANGLES, 6, 0)
-        .unbind();
-=======
      * Maps two Rectangle to the quad.
      *
      * @param {PIXI.Rectangle} targetTextureFrame - the first rectangle
@@ -213,42 +128,11 @@ export default class Quad
 
         this.vertices[6] = x;
         this.vertices[7] = y + destinationFrame.height;
->>>>>>> upstream/dev
 
         return this;
     }
 
     /**
-<<<<<<< HEAD
-     * Binds the buffer and uploads the data
-     */
-    upload()
-    {
-        for (var i = 0; i < 4; i++) {
-            this.interleaved[i*4] = this.vertices[(i*2)];
-            this.interleaved[(i*4)+1] = this.vertices[(i*2)+1];
-            this.interleaved[(i*4)+2] = this.uvs[i*2];
-            this.interleaved[(i*4)+3] = this.uvs[(i*2)+1];
-        }
-
-        this.vertexBuffer.upload(this.interleaved);
-
-        return this;
-    }
-
-    /**
-     * Removes this quad from WebGL
-     */
-    destroy()
-    {
-        var gl = this.gl;
-
-         gl.deleteBuffer(this.vertexBuffer);
-         gl.deleteBuffer(this.indexBuffer);
-    }
-
-}
-=======
      * Draws the quad
      *
      * @return {PIXI.Quad} Returns itself.
@@ -288,7 +172,6 @@ export default class Quad
     destroy()
     {
         const gl = this.gl;
->>>>>>> upstream/dev
 
         gl.deleteBuffer(this.vertexBuffer);
         gl.deleteBuffer(this.indexBuffer);

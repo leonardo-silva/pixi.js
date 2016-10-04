@@ -80,16 +80,12 @@
         "babelify",
         {
           "presets": [
-<<<<<<< HEAD
-            "es2015"
-=======
             [
               "es2015",
               {
                 "loose": true
               }
             ]
->>>>>>> upstream/dev
           ]
         }
       ],
